@@ -12,7 +12,7 @@ export const signup = async (dispatch, user) => {
   dispatch(clearMessage);
   dispatch(loginStart());
   try {
-    const res = await axios.post(`${server}/api/user/create/user`, user);
+    const res = await axios.post(`${server}/api/user/signup`, user);
     dispatch(loginSuccess(res.data));
   } catch (error) {
     dispatch(loginFailure());
