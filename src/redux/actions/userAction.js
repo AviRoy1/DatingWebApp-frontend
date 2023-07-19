@@ -1,4 +1,3 @@
-import { server } from "../store";
 import axios from "axios";
 import {
   loginFailure,
@@ -7,15 +6,13 @@ import {
   logout,
   clearMessage,
 } from "../reducers/userReducer";
+import { server } from "../store";
 
 export const signup = async (dispatch, user) => {
   dispatch(clearMessage);
   dispatch(loginStart());
   try {
-    const res = await axios.post(
-      `http://localhost:5000/api/user/create/user`,
-      user
-    );
+    const res = await axios.post(`${server}/api/user/create/user`, user);
     dispatch(loginSuccess(res.data));
   } catch (error) {
     dispatch(loginFailure());
@@ -27,7 +24,7 @@ export const login = async (dispatch, user) => {
 
   dispatch(loginStart());
   try {
-    const res = await axios.post(`http://localhost:5000/api/user/login`, user);
+    const res = await axios.post(`${server}/api/user/login`, user);
     dispatch(loginSuccess(res.data));
   } catch (error) {
     dispatch(loginFailure(error.response.data.message));
