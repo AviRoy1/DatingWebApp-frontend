@@ -1,414 +1,303 @@
-// import {
-//   Avatar,
-//   Box,
-//   Container,
-//   FormLabel,
-//   HStack,
-//   Heading,
-//   Input,
-//   Select,
-//   Stack,
-//   Text,
-//   VStack,
-// } from "@chakra-ui/react";
-// import ProfileMenu from "./ProfileMenu";
-// import { Button, ButtonGroup } from "@chakra-ui/react";
-// import { useState } from "react";
-
-// export const fileUploadCss = {
-//   cursor: "pointer",
-//   marginLeft: "-5%",
-//   width: "110%",
-//   border: "none",
-//   height: "100%",
-//   color: "black",
-//   backgroundColor: "pink",
-// };
-// const fileUploadStyle = {
-//   "&::file-selector-button": fileUploadCss,
-// };
-
-// const Profile = ({ user }) => {
-//   const [imagePrev, setImagePrev] = useState(
-//     "https://cdn.wallpapersafari.com/38/11/2WqNdH.jpg"
-//   );
-//   const [image, setImage] = useState("");
-
-//   const changeImageHandler = (e) => {
-//     const file = e.target.files[0];
-//     const reader = new FileReader();
-
-//     reader.readAsDataURL(file);
-
-//     reader.onloadend = () => {
-//       setImagePrev(reader.result);
-//       setImage(file);
-//     };
-//   };
-
-//   return (
-//     <>
-//       <ProfileMenu />
-//       <Container minW={"86vh"} minH={"105vh"} maxH="container.lg" py="5">
-//         <Heading children="Profile" m="8" textTransform={"uppercase"} />
-//         <Stack
-//           justifyContent={"flex-start"}
-//           direction={["column", "row"]}
-//           alignItems={"right"}
-//           spacing={["10", "16"]}
-//           padding="5">
-//           <VStack>
-//             <Box my="4" display={"flex"} justifyContent="center">
-//               <Avatar src={imagePrev} size={"2xl"} />
-//             </Box>
-//             <Box my={"4"}>
-//               <FormLabel
-//                 htmlFor="chooseAvatar"
-//                 children="Change Profile Photo"
-//               />
-//               <Input
-//                 accept="image/*"
-//                 required
-//                 id="chooseAvatar"
-//                 type={"file"}
-//                 focusBorderColor="pink"
-//                 css={fileUploadStyle}
-//                 onChange={changeImageHandler}
-//               />
-//             </Box>
-//             <HStack>
-//               <Text color={"pink.600"} children="Bio" fontWeight={"bold"} />
-//               <Text children="Hello friends!!" />
-//               <Button
-//                 ml={"3"}
-//                 color={"pink.300"}
-//                 colorScheme="teal"
-//                 onClick={""}
-//                 variant="ghost">
-//                 Update
-//               </Button>
-//             </HStack>{" "}
-//           </VStack>
-
-//           <VStack spacing={"4"} alignItems={["center", "flex-start"]}>
-//             <HStack>
-//               <Text color={"pink.600"} children="Name" fontWeight={"bold"} />
-//               <Text children="Avijit" ml={3} />
-//               <Button
-//                 ml={"3"}
-//                 color={"pink.300"}
-//                 colorScheme="teal"
-//                 onClick={""}
-//                 variant="ghost">
-//                 Update
-//               </Button>
-//             </HStack>
-//             {"   "}
-//             <HStack>
-//               <Text color={"pink.600"} children="Email" fontWeight={"bold"} />
-//               <Text children="abc1@gmail.com" ml={3} />
-
-//               <Button
-//                 ml={"3"}
-//                 color={"pink.300"}
-//                 colorScheme="teal"
-//                 onClick={""}
-//                 variant="ghost">
-//                 Update
-//               </Button>
-//             </HStack>
-//             {"   "}
-//             <HStack>
-//               <Text
-//                 color={"pink.600"}
-//                 children="Relationship Status"
-//                 fontWeight={"bold"}
-//               />
-//               <Text children="Single" ml={3} />
-//               <Button
-//                 ml={"3"}
-//                 color={"pink.300"}
-//                 colorScheme="teal"
-//                 onClick={""}
-//                 variant="ghost">
-//                 Update
-//               </Button>
-//             </HStack>
-//             {"   "}
-//             <HStack>
-//               <Text
-//                 color={"pink.600"}
-//                 children="Interest In"
-//                 fontWeight={"bold"}
-//               />
-//               <Text children="Female" ml={3} />
-//               <Button
-//                 ml={"3"}
-//                 color={"pink.300"}
-//                 colorScheme="teal"
-//                 onClick={""}
-//                 variant="ghost">
-//                 Update
-//               </Button>
-//             </HStack>
-//             {"   "}
-//             <HStack>
-//               <Text color={"pink.600"} children="Hobbies" fontWeight={"bold"} />
-//               <Text children="Football" ml={3} />
-//               <Button
-//                 ml={"3"}
-//                 color={"pink.300"}
-//                 colorScheme="teal"
-//                 onClick={""}
-//                 variant="ghost">
-//                 Update
-//               </Button>
-//             </HStack>
-//             {"   "}
-//             <HStack>
-//               <Text color={"pink.600"} children="Age" fontWeight={"bold"} />
-//               <Text children="22" ml={3} />
-//               <Button
-//                 ml={"3"}
-//                 color={"pink.300"}
-//                 colorScheme="teal"
-//                 onClick={""}
-//                 variant="ghost">
-//                 Update
-//               </Button>
-//             </HStack>
-//             {"   "}
-//             <HStack>
-//               <Text color={"pink.600"} children="Gender" fontWeight={"bold"} />
-//               <Select placeholder="Select option" ml={3}>
-//                 <option value="option1">Male</option>
-//                 <option value="option2">Female</option>
-//                 <option value="option3">Other</option>
-//               </Select>
-//               <Button
-//                 ml={"3"}
-//                 color={"pink.300"}
-//                 colorScheme="teal"
-//                 onClick={""}
-//                 variant="ghost">
-//                 Update
-//               </Button>
-//             </HStack>
-//             {"   "}
-//             <HStack>
-//               <Text
-//                 color={"pink.600"}
-//                 children="Location"
-//                 fontWeight={"bold"}
-//               />
-//               <Text children="India" ml={3} />
-//               <Button
-//                 ml={"3"}
-//                 color={"pink.300"}
-//                 colorScheme="teal"
-//                 onClick={""}
-//                 variant="ghost">
-//                 Update
-//               </Button>
-//             </HStack>
-//             {"   "}
-//           </VStack>
-//         </Stack>
-//       </Container>
-//     </>
-//   );
-// };
-
-// export default Profile;
-
 import React, { useState } from "react";
 import {
-  Box,
-  Flex,
   Avatar,
-  Badge,
+  Box,
+  Container,
   Heading,
   Text,
-  Divider,
   VStack,
   HStack,
-  Icon,
-  IconButton,
-  useColorModeValue,
-  Input,
   Button,
-  Container,
+  IconButton,
+  Input,
+  Select,
+  FormControl,
+  FormLabel,
+  Stack,
 } from "@chakra-ui/react";
-import {
-  MdLocationOn,
-  MdCake,
-  MdPerson,
-  MdEdit,
-  MdCheck,
-} from "react-icons/md";
+import { FaArrowLeft, FaHeart, FaTimes, FaCamera } from "react-icons/fa";
 import ProfileMenu from "./ProfileMenu";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { server } from "../../redux/store";
+
+export const fileUploadCss = {
+  cursor: "pointer",
+  marginLeft: "-5%",
+  width: "110%",
+  border: "none",
+  height: "100%",
+  color: "black",
+  backgroundColor: "pink",
+};
+const fileUploadStyle = {
+  "&::file-selector-button": fileUploadCss,
+};
 
 const Profile = () => {
-  const pinkColor = "#FF70A6";
-  const profileBgColor = useColorModeValue("pink.50", "gray.700");
-  const editIconColor = useColorModeValue("gray.600", "gray.400");
+  let userdata = useSelector((state) => state.user);
+  let user = userdata.user;
+  // console.log(user);
 
-  // Replace these with your user data or fetch from an API
-  const initialUserData = {
-    name: "John Doe",
-    username: "johndoe",
-    email: "johndoe@example.com",
-    avatarUrl: "https://via.placeholder.com/150",
-    bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed cursus luctus ullamcorper.",
-    gender: "Male",
-    age: 30,
-    location: "New York, USA",
-    hobbies: ["Photography", "Travel", "Reading"],
+  const [imagePrev, setImagePrev] = useState(
+    "https://cdn.wallpapersafari.com/38/11/2WqNdH.jpg"
+  );
+  const [name, setName] = useState(user.user.name);
+  const [age, setAge] = useState(
+    user.user?.age !== undefined ? user.user.age : "Please Enter Your Age"
+  );
+  const [location, setLocation] = useState(
+    user.user?.location !== undefined
+      ? user.user.location
+      : "Please Enter Your Location*"
+  );
+  const [gender, setGender] = useState(
+    user.user?.gender !== undefined
+      ? user.user.gender
+      : "Please Enter Your gender*"
+  );
+  const [interestIn, setInterestIn] = useState("female");
+  const [bio, setBio] = useState("Hello friends!!");
+  const [hobbies, setHobbies] = useState("Football");
+  const [showUpdatePhoto, setShowUpdatePhoto] = useState(false);
+  const [showUpdateInfo, setShowUpdateInfo] = useState(false);
+
+  const changeImageHandler = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file);
+
+    reader.onloadend = () => {
+      setImagePrev(reader.result);
+    };
   };
 
-  const [userData, setUserData] = useState(initialUserData);
-  const [isEditing, setIsEditing] = useState(false);
-
-  const handleFieldChange = (field, value) => {
-    setUserData((prevUserData) => ({
-      ...prevUserData,
-      [field]: value,
-    }));
+  const handleUpdatePhoto = () => {
+    // Implement your logic to update the photo here
+    setShowUpdatePhoto(false);
   };
 
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
-
-  const handleSaveClick = () => {
-    setIsEditing(false);
+  const handleUpdateInfo = async () => {
+    let res = await axios(`${server}/api/user/profileupdate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/JSON",
+        token: user.accessToken,
+      },
+      body: JSON.stringify({
+        gender: gender,
+        name: name,
+        bio: bio,
+        interestIn: interestIn,
+        location: location,
+      }),
+    });
+    // .then((data) => {
+    //   alert("Your profile has been updated");
+    //   window.location.reload(true);
+    // });
+    // console.log(res.data.user);
+    user = res.data.user;
+    setShowUpdateInfo(false);
   };
 
   return (
-    // <>
-    //
-    //   <Container minW={"100vh"} minH={"200vh"} maxH="container.lg" py="5">
+    <>
+      <ProfileMenu />
+      <Container minW={"86vh"} minH={"105vh"} maxH="container.lg" py="5">
+        <Heading children="Profile" m="8" textTransform="uppercase" />
 
-    //   </Container>
-    // </>
-    <Box
-      p={4}
-      shadow="md"
-      borderWidth="1px"
-      borderRadius="md"
-      bg={profileBgColor}>
-      <Flex align="center" justify="space-between">
-        <ProfileMenu />
-        <Flex align="center">
-          <Avatar size="xl" name={userData.name} src={userData.avatarUrl} />
-          <Box ml={4}>
-            <Heading as="h2" size="lg">
-              {userData.name}
-            </Heading>
-            <Text>@{userData.username}</Text>
-          </Box>
-        </Flex>
-        {isEditing ? (
-          <IconButton
-            icon={<Icon as={MdCheck} />}
-            colorScheme="pink"
-            onClick={handleSaveClick}
-            aria-label="Save"
-          />
-        ) : (
-          <IconButton
-            icon={<Icon as={MdEdit} />}
-            colorScheme="pink"
-            onClick={handleEditClick}
-            aria-label="Edit"
-          />
-        )}
-      </Flex>
-      <Divider my={4} />
-
-      <VStack spacing={2}>
-        <Text fontSize="lg">Bio</Text>
-        {isEditing ? (
-          <Input
-            value={userData.bio}
-            onChange={(e) => handleFieldChange("bio", e.target.value)}
-            size="md"
-            variant="filled"
-          />
-        ) : (
-          <Text>{userData.bio}</Text>
-        )}
-      </VStack>
-
-      <Divider my={4} />
-
-      <Flex justify="space-between">
-        <HStack spacing={4}>
-          <Icon as={MdPerson} boxSize={5} />
-          {isEditing ? (
-            <Input
-              value={userData.gender}
-              onChange={(e) => handleFieldChange("gender", e.target.value)}
-              size="md"
-              variant="filled"
-            />
-          ) : (
-            <Text>{userData.gender}</Text>
-          )}
-        </HStack>
-        <HStack spacing={4}>
-          <Icon as={MdCake} boxSize={5} />
-          {isEditing ? (
-            <Input
-              value={userData.age}
-              onChange={(e) => handleFieldChange("age", e.target.value)}
-              size="md"
-              variant="filled"
-              type="number"
-            />
-          ) : (
-            <Text>{userData.age} years old</Text>
-          )}
-        </HStack>
-        <HStack spacing={4}>
-          <Icon as={MdLocationOn} boxSize={5} />
-          {isEditing ? (
-            <Input
-              value={userData.location}
-              onChange={(e) => handleFieldChange("location", e.target.value)}
-              size="md"
-              variant="filled"
-            />
-          ) : (
-            <Text>{userData.location}</Text>
-          )}
-        </HStack>
-      </Flex>
-
-      <Divider my={4} />
-
-      <VStack spacing={2}>
-        <Text fontSize="lg">Hobbies</Text>
-        {isEditing ? (
-          <Input
-            value={userData.hobbies.join(", ")}
-            onChange={(e) =>
-              handleFieldChange("hobbies", e.target.value.split(", "))
-            }
-            size="md"
-            variant="filled"
-          />
-        ) : (
-          <HStack>
-            {userData.hobbies.map((hobby, index) => (
-              <Badge key={index} colorScheme="pink">
-                {hobby}
-              </Badge>
-            ))}
-          </HStack>
-        )}
-      </VStack>
-    </Box>
+        <Stack>
+          <VStack spacing={4} mt="5">
+            <Box my="4" display={"flex"} justifyContent="center">
+              <Avatar src={imagePrev} size={"2xl"} />
+            </Box>
+            <Box my={"4"}>
+              <FormLabel
+                htmlFor="chooseAvatar"
+                children="Change Profile Photo"
+              />
+              <Input
+                accept="image/*"
+                required
+                id="chooseAvatar"
+                type={"file"}
+                focusBorderColor="pink"
+                css={fileUploadStyle}
+                onChange={changeImageHandler}
+              />
+            </Box>
+            <HStack alignItems="center">
+              <FormLabel fontSize="xl" fontWeight="bold" color="pink.600">
+                Name:
+              </FormLabel>
+              {showUpdateInfo ? (
+                <Input value={name} onChange={(e) => setName(e.target.value)} />
+              ) : (
+                <Text fontSize="xl">{name}</Text>
+              )}
+              {showUpdateInfo ? (
+                <Button colorScheme="pink" onClick={handleUpdateInfo}>
+                  Save
+                </Button>
+              ) : (
+                <Button
+                  colorScheme="teal"
+                  onClick={() => setShowUpdateInfo(true)}>
+                  Update
+                </Button>
+              )}
+            </HStack>
+            <HStack alignItems="center">
+              <FormLabel fontSize="xl" fontWeight="bold" color="pink.600">
+                Age:
+              </FormLabel>
+              {showUpdateInfo ? (
+                <Input value={age} onChange={(e) => setAge(e.target.value)} />
+              ) : (
+                <Text fontSize="xl">{age}</Text>
+              )}
+              {showUpdateInfo ? (
+                <Button colorScheme="pink" onClick={handleUpdateInfo}>
+                  Save
+                </Button>
+              ) : (
+                <Button
+                  colorScheme="teal"
+                  onClick={() => setShowUpdateInfo(true)}>
+                  Update
+                </Button>
+              )}
+            </HStack>
+            <HStack alignItems="center">
+              <FormLabel fontSize="xl" fontWeight="bold" color="pink.600">
+                Location:
+              </FormLabel>
+              {showUpdateInfo ? (
+                <Input
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                />
+              ) : (
+                <Text fontSize="xl">{location}</Text>
+              )}
+              {showUpdateInfo ? (
+                <Button colorScheme="pink" onClick={handleUpdateInfo}>
+                  Save
+                </Button>
+              ) : (
+                <Button
+                  colorScheme="teal"
+                  onClick={() => setShowUpdateInfo(true)}>
+                  Update
+                </Button>
+              )}
+            </HStack>
+            <HStack alignItems="center">
+              <FormLabel fontSize="xl" fontWeight="bold" color="pink.600">
+                Gender:
+              </FormLabel>
+              {showUpdateInfo ? (
+                <Select
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </Select>
+              ) : (
+                <Text fontSize="xl">{gender}</Text>
+              )}
+              {showUpdateInfo ? (
+                <Button colorScheme="pink" onClick={handleUpdateInfo}>
+                  Save
+                </Button>
+              ) : (
+                <Button
+                  colorScheme="teal"
+                  onClick={() => setShowUpdateInfo(true)}>
+                  Update
+                </Button>
+              )}
+            </HStack>
+            <HStack alignItems="center">
+              <FormLabel fontSize="xl" fontWeight="bold" color="pink.600">
+                Interested In:
+              </FormLabel>
+              {showUpdateInfo ? (
+                <Select
+                  value={interestIn}
+                  onChange={(e) => setInterestIn(e.target.value)}>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="both">Both</option>
+                </Select>
+              ) : (
+                <Text fontSize="xl">{interestIn}</Text>
+              )}
+              {showUpdateInfo ? (
+                <Button colorScheme="pink" onClick={handleUpdateInfo}>
+                  Save
+                </Button>
+              ) : (
+                <Button
+                  colorScheme="teal"
+                  onClick={() => setShowUpdateInfo(true)}>
+                  Update
+                </Button>
+              )}
+            </HStack>
+            <HStack alignItems="center">
+              <FormLabel fontSize="xl" fontWeight="bold" color="pink.600">
+                Bio:
+              </FormLabel>
+              {showUpdateInfo ? (
+                <Input value={bio} onChange={(e) => setBio(e.target.value)} />
+              ) : (
+                <Text fontSize="xl">{bio}</Text>
+              )}
+              {showUpdateInfo ? (
+                <Button colorScheme="pink" onClick={handleUpdateInfo}>
+                  Save
+                </Button>
+              ) : (
+                <Button
+                  colorScheme="teal"
+                  onClick={() => setShowUpdateInfo(true)}>
+                  Update
+                </Button>
+              )}
+            </HStack>
+            <HStack alignItems="center">
+              <FormLabel fontSize="xl" fontWeight="bold" color="pink.600">
+                Hobbies:
+              </FormLabel>
+              {showUpdateInfo ? (
+                <Input
+                  value={hobbies}
+                  onChange={(e) => setHobbies(e.target.value)}
+                />
+              ) : (
+                <Text fontSize="xl">{hobbies}</Text>
+              )}
+              {showUpdateInfo ? (
+                <Button colorScheme="pink" onClick={handleUpdateInfo}>
+                  Save
+                </Button>
+              ) : (
+                <Button
+                  colorScheme="teal"
+                  onClick={() => setShowUpdateInfo(true)}>
+                  Update
+                </Button>
+              )}
+            </HStack>
+            <HStack spacing={4}></HStack>
+          </VStack>
+        </Stack>
+      </Container>
+    </>
   );
 };
 
