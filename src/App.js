@@ -2,7 +2,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import "./css/styles.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { Home, Login, SignUp } from "./pages";
+import { Home, Login, SignUp, About, Chat } from "./pages";
 import Profile from "./pages/Profile/Profile";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
@@ -24,7 +24,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
+        {/* <Route
           index
           path="/"
           element={
@@ -34,7 +34,7 @@ function App() {
               <Navigate to={"/login"} replace={true} />
             )
           }
-        />
+        /> */}
         <Route
           path="login"
           element={
@@ -56,6 +56,8 @@ function App() {
           }
         />
         <Route path="profile" element={<Profile user={userdata.user} />} />
+        <Route path="/" element={<Home />} />
+        <Route path="chat" element={<Chat />} />
       </Routes>
     </BrowserRouter>
   );

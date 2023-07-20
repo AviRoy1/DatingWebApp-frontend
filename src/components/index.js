@@ -5,3 +5,6 @@ export { default as UploadedImage } from "./Generic/UploadedImage";
 export { default as FileUpload } from "./Input Fields/FileUpload";
 export { default as DropDown } from "./Input Fields/DropDown";
 export { default as HomeNavbar } from "./NavBar/HomeNavbar";
+export { default as CustomCaraousel } from "./Generic/CustomCaraousel";
+export { default as Footer } from "./Generic/Footer";
+export { default as DashboardNav } from "./NavBar/DashboardNav";
