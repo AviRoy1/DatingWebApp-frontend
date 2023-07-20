@@ -3,6 +3,7 @@ import "./App.css";
 import "./css/styles.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Home, Login, SignUp } from "./pages";
+import Profile from "./pages/Profile/Profile";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
 import { useDispatch, useSelector } from "react-redux";
@@ -54,6 +55,7 @@ function App() {
             )
           }
         />
+        <Route path="profile" element={<Profile user={userdata.user} />} />
       </Routes>
     </BrowserRouter>
   );
