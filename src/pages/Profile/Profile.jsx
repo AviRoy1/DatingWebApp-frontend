@@ -1,303 +1,285 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Avatar,
+  Flex,
   Box,
-  Container,
-  Heading,
   Text,
-  VStack,
-  HStack,
   Button,
-  IconButton,
   Input,
-  Select,
   FormControl,
   FormLabel,
-  Stack,
+  FormHelperText,
+  Select,
+  Textarea,
+  Avatar,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  SimpleGrid,
 } from "@chakra-ui/react";
-import { FaArrowLeft, FaHeart, FaTimes, FaCamera } from "react-icons/fa";
+import { motion } from "framer-motion";
 import ProfileMenu from "./ProfileMenu";
-import { useSelector } from "react-redux";
-import axios from "axios";
-import { server } from "../../redux/store";
 
-export const fileUploadCss = {
-  cursor: "pointer",
-  marginLeft: "-5%",
-  width: "110%",
-  border: "none",
-  height: "100%",
-  color: "black",
-  backgroundColor: "pink",
-};
-const fileUploadStyle = {
-  "&::file-selector-button": fileUploadCss,
-};
-
-const Profile = () => {
-  let userdata = useSelector((state) => state.user);
-  let user = userdata.user;
-  // console.log(user);
-
-  const [imagePrev, setImagePrev] = useState(
-    "https://cdn.wallpapersafari.com/38/11/2WqNdH.jpg"
+const Profile = ({ user }) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [name, setName] = useState("Avijit");
+  const [age, setAge] = useState("22");
+  const [gender, setGender] = useState("male");
+  const [interestIn, setInterestIn] = useState("male");
+  const [relationshipType, setRelationshipType] = useState("Casual");
+  const [location, setLocation] = useState("New York");
+  const [about, setAbout] = useState(
+    "Hi, I am John! I love hiking and exploring new places."
   );
-  const [name, setName] = useState(user.user.name);
-  const [age, setAge] = useState(
-    user.user?.age !== undefined ? user.user.age : "Please Enter Your Age"
-  );
-  const [location, setLocation] = useState(
-    user.user?.location !== undefined
-      ? user.user.location
-      : "Please Enter Your Location*"
-  );
-  const [gender, setGender] = useState(
-    user.user?.gender !== undefined
-      ? user.user.gender
-      : "Please Enter Your gender*"
-  );
-  const [interestIn, setInterestIn] = useState("female");
-  const [bio, setBio] = useState("Hello friends!!");
-  const [hobbies, setHobbies] = useState("Football");
-  const [showUpdatePhoto, setShowUpdatePhoto] = useState(false);
-  const [showUpdateInfo, setShowUpdateInfo] = useState(false);
 
-  const changeImageHandler = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
+  const [showMorePhotos, setShowMorePhotos] = useState(false);
 
-    reader.readAsDataURL(file);
-
-    reader.onloadend = () => {
-      setImagePrev(reader.result);
-    };
+  const handleEdit = () => {
+    setIsEditing(true);
   };
 
-  const handleUpdatePhoto = () => {
-    // Implement your logic to update the photo here
-    setShowUpdatePhoto(false);
+  const handleSave = () => {
+    setIsEditing(false);
+    // Implement logic to save changes to the backend (e.g., API call)
   };
 
-  const handleUpdateInfo = async () => {
-    let res = await axios(`${server}/api/user/profileupdate`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/JSON",
-        token: user.accessToken,
+  const photoAnimations = {
+    initial: { scale: 1 },
+    hover: {
+      scale: 1.1,
+      y: [0, -5, 0], // Moves up, then back to the initial position
+      x: [0, -5, 0], // Moves left, then back to the initial position
+      transition: {
+        duration: 0.3,
+        repeat: Infinity, // Infinite number of times the animation repeats
+        repeatType: "reverse", // Reverses the animation after each run
       },
-      body: JSON.stringify({
-        gender: gender,
-        name: name,
-        bio: bio,
-        interestIn: interestIn,
-        location: location,
-      }),
-    });
-    // .then((data) => {
-    //   alert("Your profile has been updated");
-    //   window.location.reload(true);
-    // });
-    // console.log(res.data.user);
-    user = res.data.user;
-    setShowUpdateInfo(false);
+    },
   };
+
+  // Trigger the photo animation on component mount
+  useEffect(() => {
+    setIsEditing(false); // Ensure view mode is displayed on mount
+  }, []);
+
+  const additionalPhotos = [
+    "https://images.unsplash.com/photo-1619412112597-0ac2d2a2d0f7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8aW5zdGFncmFtJTIwcHJvZmlsZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80",
+    "https://static.zoomnews.com/photo/96566013/96566013.jpg",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVw2bktwZxPfa_kLeiLzwqH1TU_F72m_jQIw&usqp=CAU",
+  ];
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}>
       <ProfileMenu />
-      <Container minW={"86vh"} minH={"105vh"} maxH="container.lg" py="5">
-        <Heading children="Profile" m="8" textTransform="uppercase" />
-
-        <Stack>
-          <VStack spacing={4} mt="5">
-            <Box my="4" display={"flex"} justifyContent="center">
-              <Avatar src={imagePrev} size={"2xl"} />
-            </Box>
-            <Box my={"4"}>
-              <FormLabel
-                htmlFor="chooseAvatar"
-                children="Change Profile Photo"
-              />
+      <Flex direction="column" alignItems="center" p={4}>
+        <Text fontSize={{ base: "xl", md: "2xl" }} fontWeight="bold" my={4}>
+          {isEditing ? "Edit Your Profile" : "Your Profile"}
+        </Text>
+        <motion.div
+          initial={{ y: -50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: -50, opacity: 0 }}
+          transition={{ duration: 0.5 }}>
+          <motion.div
+            variants={photoAnimations}
+            initial="initial"
+            whileHover="hover"
+            whileTap="hover">
+            <Avatar
+              size={{ base: "xl", md: "2xl" }}
+              mb={4}
+              src={"https://cdn.wallpapersafari.com/38/11/2WqNdH.jpg"}
+            />
+          </motion.div>
+        </motion.div>
+        {isEditing ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}>
+            <FormControl mt={4}>
+              <FormLabel>Name</FormLabel>
               <Input
-                accept="image/*"
-                required
-                id="chooseAvatar"
-                type={"file"}
-                focusBorderColor="pink"
-                css={fileUploadStyle}
-                onChange={changeImageHandler}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                isReadOnly={!isEditing}
+                bg="white"
               />
+            </FormControl>
+            <FormControl mt={4}>
+              <FormLabel>Age</FormLabel>
+              <Input
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                isReadOnly={!isEditing}
+                bg="white"
+              />
+            </FormControl>
+            <FormControl mt={4}>
+              <FormLabel>Gender</FormLabel>
+              <Select
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                isReadOnly={!isEditing}
+                bg="white">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </Select>
+            </FormControl>
+            <FormControl mt={4}>
+              <FormLabel>Interest In</FormLabel>
+              <Select
+                value={interestIn}
+                onChange={(e) => setInterestIn(e.target.value)}
+                isReadOnly={!isEditing}
+                bg="white">
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </Select>
+            </FormControl>
+            <FormControl mt={4}>
+              <FormLabel>Relationship Status</FormLabel>
+              <Select
+                value={relationshipType}
+                onChange={(e) => setRelationshipType(e.target.value)}
+                isReadOnly={!isEditing}
+                bg="white">
+                <option value="Friendship">Friendship</option>
+                <option value="Long Term">Long Term</option>
+                <option value="Short Term">Short Term</option>
+                <option value="Casual">Casual</option>
+                <option value="Don't Know">Don't Know</option>
+                <option value="Hookups">Hookups</option>
+              </Select>
+            </FormControl>
+            <FormControl mt={4}>
+              <FormLabel>Location</FormLabel>
+              <Input
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                isReadOnly={!isEditing}
+                bg="white"
+              />
+            </FormControl>
+            <FormControl mt={4}>
+              <FormLabel>About Me</FormLabel>
+              <Textarea
+                value={about}
+                onChange={(e) => setAbout(e.target.value)}
+                isReadOnly={!isEditing}
+                bg="white"
+              />
+              <FormHelperText>
+                Tell others a bit about yourself and your interests.
+              </FormHelperText>
+            </FormControl>
+            <Button colorScheme="teal" mt={4} onClick={handleSave}>
+              Save
+            </Button>
+          </motion.div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5 }}>
+            <Text fontSize={{ base: "xl", md: "2xl" }} fontWeight="bold" mt={4}>
+              {name}
+            </Text>
+            <Box
+              bg="teal.100"
+              borderRadius="md"
+              p={2}
+              my={4}
+              textAlign="center">
+              <Text fontSize={{ base: "md", md: "lg" }}>Age: {age}</Text>
             </Box>
-            <HStack alignItems="center">
-              <FormLabel fontSize="xl" fontWeight="bold" color="pink.600">
-                Name:
-              </FormLabel>
-              {showUpdateInfo ? (
-                <Input value={name} onChange={(e) => setName(e.target.value)} />
-              ) : (
-                <Text fontSize="xl">{name}</Text>
-              )}
-              {showUpdateInfo ? (
-                <Button colorScheme="pink" onClick={handleUpdateInfo}>
-                  Save
-                </Button>
-              ) : (
-                <Button
-                  colorScheme="teal"
-                  onClick={() => setShowUpdateInfo(true)}>
-                  Update
-                </Button>
-              )}
-            </HStack>
-            <HStack alignItems="center">
-              <FormLabel fontSize="xl" fontWeight="bold" color="pink.600">
-                Age:
-              </FormLabel>
-              {showUpdateInfo ? (
-                <Input value={age} onChange={(e) => setAge(e.target.value)} />
-              ) : (
-                <Text fontSize="xl">{age}</Text>
-              )}
-              {showUpdateInfo ? (
-                <Button colorScheme="pink" onClick={handleUpdateInfo}>
-                  Save
-                </Button>
-              ) : (
-                <Button
-                  colorScheme="teal"
-                  onClick={() => setShowUpdateInfo(true)}>
-                  Update
-                </Button>
-              )}
-            </HStack>
-            <HStack alignItems="center">
-              <FormLabel fontSize="xl" fontWeight="bold" color="pink.600">
-                Location:
-              </FormLabel>
-              {showUpdateInfo ? (
-                <Input
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                />
-              ) : (
-                <Text fontSize="xl">{location}</Text>
-              )}
-              {showUpdateInfo ? (
-                <Button colorScheme="pink" onClick={handleUpdateInfo}>
-                  Save
-                </Button>
-              ) : (
-                <Button
-                  colorScheme="teal"
-                  onClick={() => setShowUpdateInfo(true)}>
-                  Update
-                </Button>
-              )}
-            </HStack>
-            <HStack alignItems="center">
-              <FormLabel fontSize="xl" fontWeight="bold" color="pink.600">
-                Gender:
-              </FormLabel>
-              {showUpdateInfo ? (
-                <Select
-                  value={gender}
-                  onChange={(e) => setGender(e.target.value)}>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="other">Other</option>
-                </Select>
-              ) : (
-                <Text fontSize="xl">{gender}</Text>
-              )}
-              {showUpdateInfo ? (
-                <Button colorScheme="pink" onClick={handleUpdateInfo}>
-                  Save
-                </Button>
-              ) : (
-                <Button
-                  colorScheme="teal"
-                  onClick={() => setShowUpdateInfo(true)}>
-                  Update
-                </Button>
-              )}
-            </HStack>
-            <HStack alignItems="center">
-              <FormLabel fontSize="xl" fontWeight="bold" color="pink.600">
-                Interested In:
-              </FormLabel>
-              {showUpdateInfo ? (
-                <Select
-                  value={interestIn}
-                  onChange={(e) => setInterestIn(e.target.value)}>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="both">Both</option>
-                </Select>
-              ) : (
-                <Text fontSize="xl">{interestIn}</Text>
-              )}
-              {showUpdateInfo ? (
-                <Button colorScheme="pink" onClick={handleUpdateInfo}>
-                  Save
-                </Button>
-              ) : (
-                <Button
-                  colorScheme="teal"
-                  onClick={() => setShowUpdateInfo(true)}>
-                  Update
-                </Button>
-              )}
-            </HStack>
-            <HStack alignItems="center">
-              <FormLabel fontSize="xl" fontWeight="bold" color="pink.600">
-                Bio:
-              </FormLabel>
-              {showUpdateInfo ? (
-                <Input value={bio} onChange={(e) => setBio(e.target.value)} />
-              ) : (
-                <Text fontSize="xl">{bio}</Text>
-              )}
-              {showUpdateInfo ? (
-                <Button colorScheme="pink" onClick={handleUpdateInfo}>
-                  Save
-                </Button>
-              ) : (
-                <Button
-                  colorScheme="teal"
-                  onClick={() => setShowUpdateInfo(true)}>
-                  Update
-                </Button>
-              )}
-            </HStack>
-            <HStack alignItems="center">
-              <FormLabel fontSize="xl" fontWeight="bold" color="pink.600">
-                Hobbies:
-              </FormLabel>
-              {showUpdateInfo ? (
-                <Input
-                  value={hobbies}
-                  onChange={(e) => setHobbies(e.target.value)}
-                />
-              ) : (
-                <Text fontSize="xl">{hobbies}</Text>
-              )}
-              {showUpdateInfo ? (
-                <Button colorScheme="pink" onClick={handleUpdateInfo}>
-                  Save
-                </Button>
-              ) : (
-                <Button
-                  colorScheme="teal"
-                  onClick={() => setShowUpdateInfo(true)}>
-                  Update
-                </Button>
-              )}
-            </HStack>
-            <HStack spacing={4}></HStack>
-          </VStack>
-        </Stack>
-      </Container>
-    </>
+            <Box
+              bg="purple.100"
+              borderRadius="md"
+              p={2}
+              my={4}
+              textAlign="center">
+              <Text fontSize={{ base: "md", md: "lg" }}>Gender: {gender}</Text>
+            </Box>
+            <Box
+              bg="orange.100"
+              borderRadius="md"
+              p={2}
+              my={4}
+              textAlign="center">
+              <Text fontSize={{ base: "md", md: "lg" }}>
+                Interest In: {interestIn}
+              </Text>
+            </Box>
+            <Box
+              bg="green.100"
+              borderRadius="md"
+              p={2}
+              my={4}
+              textAlign="center">
+              <Text fontSize={{ base: "md", md: "lg" }}>
+                Relationship Status: {relationshipType}
+              </Text>
+            </Box>
+            <Box
+              bg="blue.100"
+              borderRadius="md"
+              p={2}
+              my={4}
+              textAlign="center">
+              <Text fontSize={{ base: "md", md: "lg" }}>
+                Location: {location}
+              </Text>
+            </Box>
+            <Text fontSize={{ base: "md", md: "lg" }} my={4} textAlign="center">
+              {about}
+            </Text>
+            <Button colorScheme="teal" mt={4} onClick={handleEdit}>
+              Edit Profile
+            </Button>
+            <Button
+              colorScheme="teal"
+              ml={12}
+              mt={2}
+              onClick={() => setShowMorePhotos(true)}>
+              View More Photos
+            </Button>
+          </motion.div>
+        )}
+      </Flex>
+
+      <Modal isOpen={showMorePhotos} onClose={() => setShowMorePhotos(false)}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>More Photos</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <SimpleGrid columns={3} spacing={4}>
+              {additionalPhotos.map((photo, index) => (
+                <motion.div
+                  key={index}
+                  variants={photoAnimations}
+                  initial="initial"
+                  whileHover="hover"
+                  whileTap="hover">
+                  <Avatar src={photo} size="xl" />
+                </motion.div>
+              ))}
+            </SimpleGrid>
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    </motion.div>
   );
 };
 
