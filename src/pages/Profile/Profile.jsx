@@ -21,28 +21,63 @@ import {
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import ProfileMenu from "./ProfileMenu";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { Spinner } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
+import { loaduser } from "../../redux/actions/userAction";
+import { updateProfile } from "../../redux/actions/userAction";
 
-const Profile = ({ user }) => {
+const Profile = () => {
+  const { user, isFetching, accessToken } = useSelector((state) => state.user);
+  // let accessToken = userDetails?.user?.accessToken;
+  const navigate = useNavigate();
+  // console.log(user);
+  // const [user, setUser] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
+
   const [isEditing, setIsEditing] = useState(false);
-  const [name, setName] = useState("Avijit");
-  const [age, setAge] = useState("22");
-  const [gender, setGender] = useState("male");
-  const [interestIn, setInterestIn] = useState("male");
-  const [relationshipType, setRelationshipType] = useState("Casual");
-  const [location, setLocation] = useState("New York");
-  const [about, setAbout] = useState(
-    "Hi, I am John! I love hiking and exploring new places."
+  const [name, setName] = useState(user.user.name ?? "NotShowing");
+  const [age, setAge] = useState(user.user.age ?? "Enter Age");
+  const [gender, setGender] = useState(user.user.gender ?? "male");
+  const [interestIn, setInterestIn] = useState(
+    user.user.interestIn ?? "female"
   );
+  const [relationshipType, setRelationshipType] = useState(
+    user.user.relationshipType ?? "Casual"
+  );
+  const [location, setLocation] = useState(user.user.location ?? "India");
+  const [bio, setAbout] = useState(user.user.bio ?? "");
 
   const [showMorePhotos, setShowMorePhotos] = useState(false);
+  // console.log(gender);
 
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      setIsLoading(true);
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  // console.log(user.accessToken);
   const handleEdit = () => {
     setIsEditing(true);
   };
 
-  const handleSave = () => {
-    setIsEditing(false);
-    // Implement logic to save changes to the backend (e.g., API call)
+  const dispatch = useDispatch();
+  const handleSave = async () => {
+    // console.log(user);
+    updateProfile(
+      dispatch,
+      { age, gender, interestIn, relationshipType, location, bio },
+      user.accessToken
+    );
+
+    // loaduser(dispatch,user.accessToken),
+    // navigate('/profile');
   };
 
   const photoAnimations = {
@@ -77,6 +112,7 @@ const Profile = ({ user }) => {
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}>
       <ProfileMenu />
+
       <Flex direction="column" alignItems="center" p={4}>
         <Text fontSize={{ base: "xl", md: "2xl" }} fontWeight="bold" my={4}>
           {isEditing ? "Edit Your Profile" : "Your Profile"}
@@ -173,7 +209,7 @@ const Profile = ({ user }) => {
             <FormControl mt={4}>
               <FormLabel>About Me</FormLabel>
               <Textarea
-                value={about}
+                value={bio}
                 onChange={(e) => setAbout(e.target.value)}
                 isReadOnly={!isEditing}
                 bg="white"
@@ -242,7 +278,7 @@ const Profile = ({ user }) => {
               </Text>
             </Box>
             <Text fontSize={{ base: "md", md: "lg" }} my={4} textAlign="center">
-              {about}
+              {bio}
             </Text>
             <Button colorScheme="teal" mt={4} onClick={handleEdit}>
               Edit Profile

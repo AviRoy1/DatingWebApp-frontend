@@ -6,6 +6,8 @@ export const useReducer = createSlice({
     user: null,
     isFetching: false,
     error: false,
+    message: null,
+    accessToken: null,
   },
   reducers: {
     loginStart: (state) => {
@@ -14,6 +16,7 @@ export const useReducer = createSlice({
     loginSuccess: (state, action) => {
       state.isFetching = false;
       state.user = action.payload;
+      state.accessToken = action.payload.accessToken;
       state.error = false;
       state.message = "success!!";
     },
@@ -22,9 +25,32 @@ export const useReducer = createSlice({
       state.error = true;
       state.message = action.payload;
     },
+    loadUserRequest: (state) => {
+      state.isFetching = true;
+    },
+    loadUserSuccess: (state, action) => {
+      state.isFetching = false;
+      state.user = action.payload;
+    },
+    loadUserFail: (state, action) => {
+      state.isFetching = false;
+      state.error = action.payload;
+    },
+    updateProfileRequest: (state) => {
+      state.isFetching = true;
+    },
+    updateProfileSuccess: (state, action) => {
+      state.isFetching = false;
+      state.user = action.payload;
+    },
+    updateProfileFail: (state, action) => {
+      state.isFetching = false;
+      state.error = action.payload;
+    },
     logout: (state) => {
       state.user = null;
     },
+
     clearError: (state) => {
       state.error = false;
     },
@@ -34,6 +60,17 @@ export const useReducer = createSlice({
   },
 });
 
-export const { loginSuccess, loginFailure, loginStart, logout, clearMessage } =
-  useReducer.actions;
+export const {
+  loginSuccess,
+  loginFailure,
+  loginStart,
+  logout,
+  clearMessage,
+  loadUserFail,
+  loadUserRequest,
+  loadUserSuccess,
+  updateProfileFail,
+  updateProfileSuccess,
+  updateProfileRequest,
+} = useReducer.actions;
 export default useReducer.reducer;

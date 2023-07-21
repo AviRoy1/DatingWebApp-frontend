@@ -16,7 +16,6 @@ import storage from "redux-persist/lib/storage";
 
 const persistConfig = {
   key: "root",
-  version: 1,
   storage,
 };
 const UserpersistedReducer = persistReducer(persistConfig, userReducer);
@@ -34,4 +33,3 @@ export const store = configureStore({
 });
 
 export let persistor = persistStore(store);
-export const server = "https://dating-app-0k99.onrender.com";

@@ -1,3 +1,4 @@
+import { server } from "../store";
 import axios from "axios";
 import {
   loginFailure,
@@ -5,14 +6,20 @@ import {
   loginSuccess,
   logout,
   clearMessage,
+  loadUserFail,
+  loadUserRequest,
+  loadUserSuccess,
+  updateProfileFail,
+  updateProfileRequest,
+  updateProfileSuccess,
 } from "../reducers/userReducer";
-import { server } from "../store";
 
 export const signup = async (dispatch, user) => {
   dispatch(clearMessage);
   dispatch(loginStart());
   try {
-    const res = await axios.post(`${server}/api/user/signup`, user);
+    const res = await axios.post(`http://localhost:5000/api/user/signup`, user);
+    // console.log(res.data);
     dispatch(loginSuccess(res.data));
   } catch (error) {
     dispatch(loginFailure());
@@ -24,10 +31,50 @@ export const login = async (dispatch, user) => {
 
   dispatch(loginStart());
   try {
-    const res = await axios.post(`${server}/api/user/login`, user);
+    const res = await axios.post(`http://localhost:5000/api/user/login`, user);
     dispatch(loginSuccess(res.data));
   } catch (error) {
-    dispatch(loginFailure(error.response?.data.message));
+    dispatch(loginFailure(error.response.data.message));
+  }
+};
+
+export const loaduser = async (dispatch, accessToken) => {
+  dispatch(clearMessage);
+
+  dispatch(loadUserRequest());
+  try {
+    const res = await axios.get(`http://localhost:5000/api/user/me`, {
+      headers: {
+        "Content-Type": "application/JSON",
+        token: accessToken,
+      },
+    });
+    // console.log(res.data);
+    dispatch(loadUserSuccess(res.data));
+  } catch (error) {
+    dispatch(loadUserFail(error.response.data.message));
+  }
+};
+
+export const updateProfile = async (dispatch, data, accessToken) => {
+  // dispatch(clearMessage);
+  console.log(accessToken);
+  dispatch(updateProfileRequest());
+  try {
+    const res = await axios.post(
+      `http://localhost:5000/api/user/profileupdate`,
+      data,
+      {
+        headers: {
+          "Content-Type": "application/JSON",
+          token: accessToken,
+        },
+      }
+    );
+    // console.log(res.data);
+    dispatch(updateProfileSuccess(res.data));
+  } catch (error) {
+    dispatch(updateProfileFail(error.response.data.message));
   }
 };
 
