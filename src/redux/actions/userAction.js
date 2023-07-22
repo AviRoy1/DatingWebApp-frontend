@@ -61,17 +61,13 @@ export const loaduser = async (dispatch, accessToken) => {
 export const updateProfile = async (dispatch, data, accessToken) => {
   dispatch(updateProfileRequest());
   try {
-    const res = await axios.post(
-      `http://localhost:5000/api/user/profileupdate`,
-      data,
-      {
-        headers: {
-          "Content-Type": "application/JSON",
-          token: accessToken,
-        },
-        withCredentials: true,
-      }
-    );
+    const res = await axios.post(`${server}/api/user/profileupdate`, data, {
+      headers: {
+        "Content-Type": "application/JSON",
+        token: accessToken,
+      },
+      withCredentials: true,
+    });
     // console.log(res.data);
     dispatch(updateProfileSuccess(res.data));
   } catch (error) {
