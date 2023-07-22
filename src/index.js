@@ -1,121 +1,31 @@
-import logo from "./logo.svg";
-import "./App.css";
-import "./css/styles.css";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import React, { StrictMode } from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./redux/store";
+import "./css/assets/css/style.css";
+import "./css/assets/css/animate.css";
+import "./css/assets/css/icofont.min.css";
+import "./css/assets/css/all.min.css";
+import { ChakraProvider, theme } from "@chakra-ui/react";
 
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min";
-import { useDispatch, useSelector } from "react-redux";
-import toast, { Toaster } from "react-hot-toast";
-import React, { useEffect, useState } from "react";
-import { clearerror, clearmessage } from "./redux/actions/userAction";
-import "react-toastify/dist/ReactToastify.css";
-import { loaduser } from "./redux/actions/userAction";
-import axios from "axios";
-import Loader from "./components/Loader/Loader";
-import Match from "./pages/Match/Match";
-import Login from "./pages/Auth/Login";
-import SignUp from "./pages/Auth/SignUp";
-import AddProfile from "./pages/Auth/AddProfile";
-import Profile from "./pages/Profile/Profile";
-import "./profile.css";
-import MatchPage from "./pages/Match/Match";
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <React.StrictMode>
+        <ChakraProvider theme={theme}>
+          <App />
+        </ChakraProvider>
+      </React.StrictMode>
+    </PersistGate>
+  </Provider>
+);
 
-function App() {
-  const { user, isFetching, message, error } = useSelector(
-    (state) => state.user
-  );
-
-  const dispatch = useDispatch();
-  console.log(error, message);
-
-  useEffect(() => {
-    if (error) {
-      toast.error(message);
-      console.log("hitting");
-      clearerror(dispatch);
-    }
-    if (message) {
-      toast.success(message);
-      clearmessage(dispatch);
-    }
-  }, []);
-
-  // useEffect(() => {
-  //   loaduser(dispatch, user.accessToken);
-  // }, []);
-  // console.log(user);
-
-  //   return (
-  //     <BrowserRouter>
-  //       {isFetching ? (
-  //         <Loader />
-  //       ) : (
-  //         <>
-  //           <Routes>
-  //             <Route
-  //               index
-  //               path="/"
-  //               element={
-  //                 user !== null ? (
-  //                   <Home />
-  //                 ) : (
-  //                   <Navigate to={"/login"} replace={true} />
-  //                 )
-  //               }
-  //             />
-  //             <Route
-  //               path="/login"
-  //               element={
-  //                 user === null ? <Login /> : <Navigate to={"/"} replace={true} />
-  //               }
-  //             />
-  //             <Route
-  //               path="signup"
-  //               element={
-  //                 user === null ? (
-  //                   <SignUp />
-  //                 ) : (
-  //                   <Navigate to={"/"} replace={true} />
-  //                 )
-  //               }
-  //             />
-
-  //             <Route
-  //               path="/profile"
-  //               element={
-  //                 <div className="profile-container">
-  //                   <Profile user={user} />
-  //                 </div>
-  //               }
-  //             />
-
-  //             <Route path="/match" element={<Match />} />
-  //           </Routes>
-  //         </>
-  //       )}
-  //     </BrowserRouter>
-  //   );
-  // }
-
-  return (
-    <BrowserRouter>
-      {isFetching ? (
-        <Loader />
-      ) : (
-        <>
-          <Routes>
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/addprofile" element={<AddProfile />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/match" element={<MatchPage />} />
-          </Routes>
-          <Toaster />
-        </>
-      )}
-    </BrowserRouter>
-  );
-}
-
-export default App;
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();
