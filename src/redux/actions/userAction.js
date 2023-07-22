@@ -82,3 +82,7 @@ export const updateProfile = async (dispatch, data, accessToken) => {
 export const clearmessage = async (dispatch) => {
   dispatch(clearMessage());
 };
+
+export const clearerror = async (dispatch) => {
+  dispatch(clearerror());
+};
