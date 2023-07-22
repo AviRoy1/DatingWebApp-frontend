@@ -16,9 +16,7 @@ export const useReducer = createSlice({
     loginSuccess: (state, action) => {
       state.isFetching = false;
       state.user = action.payload;
-      state.accessToken = action.payload.accessToken;
-      state.error = false;
-      state.message = "success!!";
+      state.message = action.payload.message;
     },
     loginFailure: (state, action) => {
       state.isFetching = false;
@@ -42,6 +40,7 @@ export const useReducer = createSlice({
     updateProfileSuccess: (state, action) => {
       state.isFetching = false;
       state.user = action.payload;
+      state.message = action.payload.message;
     },
     updateProfileFail: (state, action) => {
       state.isFetching = false;

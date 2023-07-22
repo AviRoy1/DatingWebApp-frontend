@@ -6,16 +6,19 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "./redux/store";
-import { ChakraProvider, theme } from "@chakra-ui/react";
+import "./css/assets/css/style.css";
+import "./css/assets/css/animate.css";
+import "./css/assets/css/icofont.min.css";
+import "./css/assets/css/all.min.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <React.StrictMode>
-        <ChakraProvider theme={theme}>
-          <App />
-        </ChakraProvider>
+        {/* <ChakraProvider theme={theme}> */}
+        <App />
+        {/* </ChakraProvider> */}
       </React.StrictMode>
     </PersistGate>
   </Provider>

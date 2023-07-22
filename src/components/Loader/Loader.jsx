@@ -1,7 +1,7 @@
 import { Spinner, VStack } from "@chakra-ui/react";
 import React from "react";
 
-const Loader = ({ color = "pink.500" }) => {
+const Loader = ({ color = "yellow.800" }) => {
   return (
     <VStack h="100vh" justifyContent={"center"}>
       <div style={{ transform: "scale(4)" }}>

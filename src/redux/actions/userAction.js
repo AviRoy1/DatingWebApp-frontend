@@ -32,8 +32,10 @@ export const login = async (dispatch, user) => {
   dispatch(loginStart());
   try {
     const res = await axios.post(`http://localhost:5000/api/user/login`, user);
+    console.log(res.data);
     dispatch(loginSuccess(res.data));
   } catch (error) {
+    console.log(error.response);
     dispatch(loginFailure(error.response.data.message));
   }
 };
@@ -57,8 +59,6 @@ export const loaduser = async (dispatch, accessToken) => {
 };
 
 export const updateProfile = async (dispatch, data, accessToken) => {
-  // dispatch(clearMessage);
-  console.log(accessToken);
   dispatch(updateProfileRequest());
   try {
     const res = await axios.post(
@@ -69,6 +69,7 @@ export const updateProfile = async (dispatch, data, accessToken) => {
           "Content-Type": "application/JSON",
           token: accessToken,
         },
+        withCredentials: true,
       }
     );
     // console.log(res.data);
