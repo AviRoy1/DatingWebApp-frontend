@@ -138,7 +138,7 @@ const AddProfile = () => {
                     </div>
                   </div>
                   <div className="form-group">
-                    <label>Marial status*</label>
+                    <label>Marital status*</label>
                     <div className="banner__inputlist">
                       <div className="s-input me-3">
                         <input

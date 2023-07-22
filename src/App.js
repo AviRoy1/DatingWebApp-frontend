@@ -17,6 +17,7 @@ import Match from "./pages/Match/Match";
 import Login from "./pages/Auth/Login";
 import SignUp from "./pages/Auth/SignUp";
 import AddProfile from "./pages/Auth/AddProfile";
+import Profile from "./pages/Profile/Profile";
 
 function App() {
   const { user, isFetching, message, error } = useSelector(
@@ -26,15 +27,15 @@ function App() {
   const dispatch = useDispatch();
   console.log(message);
 
-  useEffect(() => {
-    if (error) {
-      toast.error(message);
-      clearmessage(dispatch);
-    } else {
-      toast.success(message);
-      clearmessage(dispatch);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (error) {
+  //     toast.error(message);
+  //     clearmessage(dispatch);
+  //   } else {
+  //     toast.success(message);
+  //     clearmessage(dispatch);
+  //   }
+  // }, []);
 
   // useEffect(() => {
   //   loaduser(dispatch, user.accessToken);
@@ -103,6 +104,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/addprofile" element={<AddProfile />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
           <Toaster />
         </>
