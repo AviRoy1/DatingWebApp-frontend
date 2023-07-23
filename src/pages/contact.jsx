@@ -87,8 +87,7 @@ class ContactUs extends Component {
                       className="contact-form"
                       action="contact.php"
                       id="contact-form"
-                      method="POST"
-                    >
+                      method="POST">
                       <div className="form-group">
                         <input
                           type="text"
@@ -147,8 +146,7 @@ class ContactUs extends Component {
                           onChange={(e) => {
                             this.setState({ respondMassage: e.target.value });
                           }}
-                          placeholder="Your Message"
-                        ></textarea>
+                          placeholder="Your Message"></textarea>
                       </div>
                       <div className="form-group w-100 text-center">
                         <button className="default-btn reverse" type="submit">
