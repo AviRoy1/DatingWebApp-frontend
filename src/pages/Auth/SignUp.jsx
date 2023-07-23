@@ -112,6 +112,17 @@ const SignUp = () => {
                   </button>
                 </form>
               </div>
+              <div className="or">
+                <p>OR</p>
+              </div>
+              <div className="or-content">
+                {/* <p>{otherTitle}</p>
+                                            <a href="#" className="default-btn reverse"><img src="assets/images/login/google.png" alt="google" /> <span>Sign Up with Google</span></a> */}
+                <p className="or-signup">
+                  {" "}
+                  Already have an account? <Link to="/login">Sign up here</Link>
+                </p>
+              </div>
             </div>
           </div>
         </div>

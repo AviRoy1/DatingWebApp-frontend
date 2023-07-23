@@ -4,8 +4,6 @@ import { useDispatch } from "react-redux";
 import { login } from "../../redux/actions/userAction";
 import { useNavigate } from "react-router-dom";
 
-import Profile from "../Profile/Profile";
-
 const title = "Welcome to Ollya";
 const otherTitle = "Sign up with your email";
 

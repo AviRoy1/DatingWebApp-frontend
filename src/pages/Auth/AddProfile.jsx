@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import SelectMarid from "../../components/Select/selectmarid";
 import { updateProfile } from "../../redux/actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -138,7 +137,7 @@ const AddProfile = () => {
                     </div>
                   </div>
                   <div className="form-group">
-                    <label>Marital status*</label>
+                    <label>Marial status*</label>
                     <div className="banner__inputlist">
                       <div className="s-input me-3">
                         <input

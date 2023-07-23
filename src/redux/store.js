@@ -33,4 +33,3 @@ export const store = configureStore({
 });
 
 export let persistor = persistStore(store);
-export const server = "https://dating-app-0k99.onrender.com";
