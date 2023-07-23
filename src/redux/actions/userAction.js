@@ -1,4 +1,4 @@
-import { server } from "../store";
+import { server, store } from "../store";
 import axios from "axios";
 import {
   loginFailure,
@@ -18,7 +18,7 @@ export const signup = async (dispatch, user) => {
   dispatch(clearMessage);
   dispatch(loginStart());
   try {
-    const res = await axios.post(`http://localhost:5000/api/user/signup`, user);
+    const res = await axios.post(`${server}/api/user/signup`, user);
     // console.log(res.data);
     dispatch(loginSuccess(res.data));
   } catch (error) {
@@ -31,7 +31,7 @@ export const login = async (dispatch, user) => {
 
   dispatch(loginStart());
   try {
-    const res = await axios.post(`http://localhost:5000/api/user/login`, user);
+    const res = await axios.post(`${server}/api/user/login`, user);
     console.log(res.data);
     dispatch(loginSuccess(res.data));
   } catch (error) {
@@ -45,7 +45,7 @@ export const loaduser = async (dispatch, accessToken) => {
 
   dispatch(loadUserRequest());
   try {
-    const res = await axios.get(`http://localhost:5000/api/user/me`, {
+    const res = await axios.get(`${server}/api/user/me`, {
       headers: {
         "Content-Type": "application/JSON",
         token: accessToken,
@@ -61,17 +61,13 @@ export const loaduser = async (dispatch, accessToken) => {
 export const updateProfile = async (dispatch, data, accessToken) => {
   dispatch(updateProfileRequest());
   try {
-    const res = await axios.post(
-      `http://localhost:5000/api/user/profileupdate`,
-      data,
-      {
-        headers: {
-          "Content-Type": "application/JSON",
-          token: accessToken,
-        },
-        withCredentials: true,
-      }
-    );
+    const res = await axios.post(`${server}/api/user/profileupdate`, data, {
+      headers: {
+        "Content-Type": "application/JSON",
+        token: accessToken,
+      },
+      withCredentials: true,
+    });
     // console.log(res.data);
     dispatch(updateProfileSuccess(res.data));
   } catch (error) {
