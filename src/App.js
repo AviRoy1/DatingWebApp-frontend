@@ -23,7 +23,7 @@ import MatchPage from "./pages/Match/Match";
 import Swiper from "swiper";
 import "swiper/css";
 import ScrollToTop from "./component/layout/scrolltop";
-import AboutPage from "./pages/about";
+// import AboutPage from "./pages/about";
 import ContactUs from "./pages/contact";
 import ErrorPage from "./pages/errorpage";
 import HomePageTwo from "./pages/hometwo";
@@ -121,7 +121,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/match" element={<MatchPage />} />
             <Route path="/" element={<HomePageTwo />} />{" "}
-            <Route path="/about" element={<AboutPage />} />{" "}
+            {/* <Route path="/about" element={<AboutPage />} />{" "} */}
             <Route path="/membership" element={<MembershipPage />} />{" "}
             <Route path="/*" element={<ErrorPage />} />{" "}
             <Route path="/contact" element={<ContactUs />} />{" "}
