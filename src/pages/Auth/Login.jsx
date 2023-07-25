@@ -16,7 +16,7 @@ const Login = () => {
   const useHandler = (e) => {
     e.preventDefault();
     login(dispatch, { email, password });
-    nevigate("/profile");
+    nevigate("/member-single");
   };
 
   return (

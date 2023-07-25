@@ -13,16 +13,19 @@ import {
 } from "redux-persist";
 
 import storage from "redux-persist/lib/storage";
+import matchReducer from "./reducers/matchReducer";
 
 const persistConfig = {
   key: "root",
   storage,
 };
 const UserpersistedReducer = persistReducer(persistConfig, userReducer);
+const MatchpersistedReducer = persistReducer(persistConfig, matchReducer);
 
 export const store = configureStore({
   reducer: {
     user: UserpersistedReducer,
+    match: MatchpersistedReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -33,4 +36,4 @@ export const store = configureStore({
 });
 
 export let persistor = persistStore(store);
-export const server = "https://dating-app-0k99.onrender.com";
+export const server = "https://datingapp-qkid.onrender.com";

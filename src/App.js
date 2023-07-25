@@ -13,17 +13,16 @@ import "react-toastify/dist/ReactToastify.css";
 import { loaduser } from "./redux/actions/userAction";
 import axios from "axios";
 import Loader from "./component/Loader/Loader";
-import Match from "./pages/Match/Match";
 import Login from "./pages/Auth/Login";
 import SignUp from "./pages/Auth/SignUp";
 import AddProfile from "./pages/Auth/AddProfile";
 import Profile from "./pages/Profile/Profile";
 import "./profile.css";
-import MatchPage from "./pages/Match/Match";
+// import MatchPage from "./pages/Match/Match1";
 import Swiper from "swiper";
 import "swiper/css";
 import ScrollToTop from "./component/layout/scrolltop";
-// import AboutPage from "./pages/about";
+import AboutPage from "./pages/about";
 import ContactUs from "./pages/contact";
 import ErrorPage from "./pages/errorpage";
 import HomePageTwo from "./pages/hometwo";
@@ -39,74 +38,19 @@ function App() {
   const dispatch = useDispatch();
   console.log(error, message);
 
-  useEffect(() => {
-    if (error) {
-      toast.error(message);
-      console.log("hitting");
-      clearerror(dispatch);
-    }
-    if (message) {
-      toast.success(message);
-      clearmessage(dispatch);
-    }
-  }, []);
-
   // useEffect(() => {
-  //   loaduser(dispatch, user.accessToken);
+  //   if (error) {
+  //     toast.error(message);
+  //     console.log("hitting");
+  //     clearerror(dispatch);
+  //   }
+  //   if (message) {
+  //     toast.success(message);
+  //     clearmessage(dispatch);
+  //   }
   // }, []);
+
   // console.log(user);
-
-  //   return (
-  //     <BrowserRouter>
-  //       {isFetching ? (
-  //         <Loader />
-  //       ) : (
-  //         <>
-  //           <Routes>
-  //             <Route
-  //               index
-  //               path="/"
-  //               element={
-  //                 user !== null ? (
-  //                   <Home />
-  //                 ) : (
-  //                   <Navigate to={"/login"} replace={true} />
-  //                 )
-  //               }
-  //             />
-  //             <Route
-  //               path="/login"
-  //               element={
-  //                 user === null ? <Login /> : <Navigate to={"/"} replace={true} />
-  //               }
-  //             />
-  //             <Route
-  //               path="signup"
-  //               element={
-  //                 user === null ? (
-  //                   <SignUp />
-  //                 ) : (
-  //                   <Navigate to={"/"} replace={true} />
-  //                 )
-  //               }
-  //             />
-
-  //             <Route
-  //               path="/profile"
-  //               element={
-  //                 <div className="profile-container">
-  //                   <Profile user={user} />
-  //                 </div>
-  //               }
-  //             />
-
-  //             <Route path="/match" element={<Match />} />
-  //           </Routes>
-  //         </>
-  //       )}
-  //     </BrowserRouter>
-  //   );
-  // }
 
   return (
     <BrowserRouter>
@@ -119,9 +63,9 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/addprofile" element={<AddProfile />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/match" element={<MatchPage />} />
+            {/* <Route path="/match" element={<MatchPage />} /> */}
             <Route path="/" element={<HomePageTwo />} />{" "}
-            {/* <Route path="/about" element={<AboutPage />} />{" "} */}
+            <Route path="/about" element={<AboutPage />} />{" "}
             <Route path="/membership" element={<MembershipPage />} />{" "}
             <Route path="/*" element={<ErrorPage />} />{" "}
             <Route path="/contact" element={<ContactUs />} />{" "}

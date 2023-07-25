@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import { updateProfile } from "../../redux/actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,9 +11,12 @@ const AddProfile = () => {
   const [gender, setGender] = useState();
   const [interestIn, setInterestIn] = useState();
   const [relationshipType, setRelationshipType] = useState("");
+  const [relationshipStatus, setRelationshipStatus] = useState("");
+
   const [location, setLocation] = useState();
 
   // console.log(location);
+  const nevigate = useNavigate();
   const dispatch = useDispatch();
   const useHandler = (e) => {
     e.preventDefault();
@@ -25,10 +28,12 @@ const AddProfile = () => {
         gender,
         interestIn,
         relationshipType,
+        relationshipStatus,
         location,
       },
       user.accessToken
     );
+    nevigate("/member-single");
   };
 
   return (
@@ -144,7 +149,7 @@ const AddProfile = () => {
                           type="radio"
                           name="gender3"
                           id="males3"
-                          onChange={(e) => setRelationshipType("Single")}
+                          onChange={(e) => setRelationshipStatus("Single")}
                         />
                         <label htmlFor="males3">Single</label>
                       </div>
@@ -153,9 +158,59 @@ const AddProfile = () => {
                           type="radio"
                           name="gender3"
                           id="females3"
-                          onChange={(e) => setRelationshipType("Marid")}
+                          onChange={(e) => setRelationshipStatus("Marid")}
                         />
                         <label htmlFor="females3">Marid</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label>Relationship Type*</label>
+                    <div className="banner__inputlist">
+                      <div className="s-input me-3">
+                        <input
+                          type="radio"
+                          name="gender4"
+                          id="longterm"
+                          onChange={(e) => setRelationshipType("Long Term")}
+                        />
+                        <label htmlFor="longterm">Long Term</label>
+                      </div>
+                      <div className="s-input me-3">
+                        <input
+                          type="radio"
+                          name="gender4"
+                          id="shortterm"
+                          onChange={(e) => setRelationshipType("Short Term")}
+                        />
+                        <label htmlFor="shortterm">Short Term</label>
+                      </div>
+                      <div className="s-input">
+                        <input
+                          type="radio"
+                          name="gender4"
+                          id="friendship"
+                          onChange={(e) => setRelationshipType("Friendship")}
+                        />
+                        <label htmlFor="Friendship">Friendship</label>
+                      </div>
+                      <div className="s-input">
+                        <input
+                          type="radio"
+                          name="gender4"
+                          id="Casual"
+                          onChange={(e) => setRelationshipType("Casual")}
+                        />
+                        <label htmlFor="Casual">Casual</label>
+                      </div>
+                      <div className="s-input">
+                        <input
+                          type="radio"
+                          name="gender4"
+                          id="Hookups"
+                          onChange={(e) => setRelationshipType("Marid")}
+                        />
+                        <label htmlFor="Hookups">Hookups</label>
                       </div>
                     </div>
                   </div>

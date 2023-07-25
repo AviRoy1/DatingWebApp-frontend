@@ -25,7 +25,7 @@ const Headertwo = () => {
     e.preventDefault();
     nevigate("/login");
   };
-  console.log(user);
+  // console.log(user);
   return (
     <header className="header" id="navbar">
       <div className="header__bottom">
