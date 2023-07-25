@@ -22,7 +22,6 @@ import "./profile.css";
 import Swiper from "swiper";
 import "swiper/css";
 import ScrollToTop from "./component/layout/scrolltop";
-import AboutPage from "./pages/about";
 import ContactUs from "./pages/contact";
 import ErrorPage from "./pages/errorpage";
 import HomePageTwo from "./pages/hometwo";
