@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import React from "react";
 import { Box, Center, Flex, Image, useMediaQuery } from "@chakra-ui/react";
-import { server } from "../store";
+import { server } from "../redux/store";
 import { motion } from "framer-motion";
 import { IoIosClose, IoIosHeart, IoIosRocket, IoIosEye } from "react-icons/io";
 import { Link } from "react-router-dom";
