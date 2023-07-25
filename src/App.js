@@ -65,7 +65,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             {/* <Route path="/match" element={<MatchPage />} /> */}
             <Route path="/" element={<HomePageTwo />} />{" "}
-            <Route path="/about" element={<AboutPage />} />{" "}
+            {/* <Route path="/about" element={<AboutPage />} />{" "} */}
             <Route path="/membership" element={<MembershipPage />} />{" "}
             <Route path="/*" element={<ErrorPage />} />{" "}
             <Route path="/contact" element={<ContactUs />} />{" "}
