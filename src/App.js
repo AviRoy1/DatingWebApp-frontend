@@ -16,40 +16,33 @@ import Loader from "./component/Loader/Loader";
 import Login from "./pages/Auth/Login";
 import SignUp from "./pages/Auth/SignUp";
 import AddProfile from "./pages/Auth/AddProfile";
-import Profile from "./pages/Profile/Profile";
 import "./profile.css";
 // import MatchPage from "./pages/Match/Match1";
 import Swiper from "swiper";
 import "swiper/css";
 import ScrollToTop from "./component/layout/scrolltop";
+import AboutPage from "./pages/about";
 import ContactUs from "./pages/contact";
 import ErrorPage from "./pages/errorpage";
 import HomePageTwo from "./pages/hometwo";
 import MemberDetails from "./pages/member-single";
 import MembershipPage from "./pages/membership";
 import Policy from "./pages/policy";
+import UserProfile from "./pages/UserProfile";
 
 function App() {
-  const { user, isFetching, message, error } = useSelector(
+  const { user, isFetching, message, error, accessToken } = useSelector(
     (state) => state.user
   );
 
   const dispatch = useDispatch();
   console.log(error, message);
 
-  // useEffect(() => {
-  //   if (error) {
-  //     toast.error(message);
-  //     console.log("hitting");
-  //     clearerror(dispatch);
-  //   }
-  //   if (message) {
-  //     toast.success(message);
-  //     clearmessage(dispatch);
-  //   }
-  // }, []);
+  useEffect(() => {
+    loaduser(dispatch, accessToken);
+  }, []);
 
-  // console.log(user);
+  console.log(user);
 
   return (
     <BrowserRouter>
@@ -61,16 +54,15 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/addprofile" element={<AddProfile />} />
-            <Route path="/profile" element={<Profile />} />
-            {/* <Route path="/match" element={<MatchPage />} /> */}
             <Route path="/" element={<HomePageTwo />} />{" "}
-            {/* <Route path="/about" element={<AboutPage />} />{" "} */}
+            <Route path="/about" element={<AboutPage />} />{" "}
             <Route path="/membership" element={<MembershipPage />} />{" "}
             <Route path="/*" element={<ErrorPage />} />{" "}
             <Route path="/contact" element={<ContactUs />} />{" "}
             <Route path="/register" element={<SignUp />} />{" "}
             <Route path="/member-single" element={<MemberDetails />} />{" "}
             <Route path="/policy" element={<Policy />} />{" "}
+            <Route path="/userprofile" element={<UserProfile />} />{" "}
           </Routes>
           <Toaster />
         </>

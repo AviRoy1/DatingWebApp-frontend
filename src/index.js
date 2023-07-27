@@ -13,13 +13,14 @@ import "./css/assets/css/animate.css";
 import "./css/assets/css/icofont.min.css";
 import "./css/assets/css/all.min.css";
 import { ChakraProvider, theme } from "@chakra-ui/react";
+import customTheme from "./customTheme.js";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
       <React.StrictMode>
-        <ChakraProvider theme={theme}>
+        <ChakraProvider theme={customTheme}>
           <App />
         </ChakraProvider>
       </React.StrictMode>

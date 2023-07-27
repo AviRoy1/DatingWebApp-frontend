@@ -3,35 +3,108 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { updateProfile } from "../../redux/actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
+import { Avatar, Box, FormLabel, Input } from "@chakra-ui/react";
+import app from "../firebase";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+
+export const fileUploadCss = {
+  cursor: "pointer",
+  marginLeft: "-5%",
+  width: "110%",
+  border: "none",
+  height: "100%",
+  color: "#ECC94B",
+  backgroundColor: "white",
+};
+const fileUploadStyle = {
+  "&::file-selector-button": fileUploadCss,
+};
 
 const AddProfile = () => {
-  const { user, isFetching } = useSelector((state) => state.user);
+  const { user, isFetching, accessToken } = useSelector((state) => state.user);
 
-  const [age, setAge] = useState();
-  const [gender, setGender] = useState();
-  const [interestIn, setInterestIn] = useState();
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
+  const [interestIn, setInterestIn] = useState("");
   const [relationshipType, setRelationshipType] = useState("");
   const [relationshipStatus, setRelationshipStatus] = useState("");
+  const [bio, setBio] = useState("");
+  const [imagePrev, setImagePrev] = useState("");
+  const [image, setImage] = useState("");
+  const [file, setfile] = useState(null);
+  const nevigate = useNavigate();
+
+  const changeImageHandler = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.readAsDataURL(file);
+
+    reader.onloadend = () => {
+      setImagePrev(reader.result);
+      setImage(file);
+      setfile(file);
+    };
+  };
+  // console.log(user);
 
   const [location, setLocation] = useState();
 
   // console.log(location);
-  const nevigate = useNavigate();
   const dispatch = useDispatch();
   const useHandler = (e) => {
     e.preventDefault();
-    // console.log(user);
-    updateProfile(
-      dispatch,
-      {
-        age,
-        gender,
-        interestIn,
-        relationshipType,
-        relationshipStatus,
-        location,
+
+    const fileName = new Date().getTime() + file?.name;
+    const storage = getStorage(app);
+    const StorageRef = ref(storage, fileName);
+
+    const uploadTask = uploadBytesResumable(StorageRef, file);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        // Observe state change events such as progress, pause, and resume
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+        switch (snapshot.state) {
+          case "paused":
+            console.log("Upload is paused");
+            break;
+          case "running":
+            console.log("Upload is running");
+            break;
+        }
       },
-      user.accessToken
+      (error) => {
+        // Handle unsuccessful uploads
+      },
+      () => {
+        // Handle successful uploads on complete
+        // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+        getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+          updateProfile(
+            dispatch,
+            {
+              age: age,
+              gender: gender,
+              interestIn: interestIn,
+              location: location,
+              relationshipStatus: relationshipStatus,
+              relationshipType: relationshipType,
+              profilePic: downloadURL,
+              bio: bio,
+            },
+            accessToken
+          );
+        });
+      }
     );
     nevigate("/member-single");
   };
@@ -70,11 +143,30 @@ const AddProfile = () => {
               <div className="main-content">
                 <form action="#">
                   <div className="form-group">
+                    <Box my="4" display={"flex"} justifyContent="center">
+                      <Avatar src={imagePrev} size={"2xl"} />
+                    </Box>
+                    <Box my={"4"}>
+                      <FormLabel
+                        htmlFor="chooseAvatar"
+                        children="Choose Avatar"
+                      />
+                      <Input
+                        accept="image/*"
+                        required
+                        id="chooseAvatar"
+                        type={"file"}
+                        focusBorderColor="yellow.500"
+                        css={fileUploadStyle}
+                        onChange={changeImageHandler}
+                      />
+                    </Box>
+
                     <label>Age</label>
                     <input
                       type="text"
                       className="my-form-control"
-                      onChange={(e) => setAge(e.target.value)}
+                      onChange={(e) => setAge("male")}
                     />
                   </div>
                   <div className="form-group">
@@ -221,6 +313,15 @@ const AddProfile = () => {
                       className="my-form-control"
                       placeholder="Enter Your City"
                       onChange={(e) => setLocation(e.target.value)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>About You*</label>
+                    <input
+                      type="text"
+                      className="my-form-control"
+                      placeholder="Enter Your City"
+                      onChange={(e) => setBio(e.target.value)}
                     />
                   </div>
 

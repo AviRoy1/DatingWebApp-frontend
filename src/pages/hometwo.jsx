@@ -10,23 +10,22 @@ import MemberSectionTwo from "../component/section/membertwo";
 import StorySection from "../component/section/story";
 import TransportationSection from "../component/section/transportation";
 import WorkSectionTwo from "../component/section/worktwo";
+import React from "react";
 
-class HomePageTwo extends Component {
-  render() {
-    return (
-      <Fragment>
-        <HeaderTwo />
-        <BannerTwo />
-        <AboutSectionTwo />
-        <AboutSectionThree />
-        <AboutSection />
-        <TransportationSection />
-        <WorkSectionTwo />
-        <AppSectionTwo />
-        <Footer />
-      </Fragment>
-    );
-  }
-}
+const HomePageTwo = () => {
+  return (
+    <Fragment>
+      <HeaderTwo />
+      <BannerTwo />
+      <AboutSectionTwo />
+      <AboutSectionThree />
+      <AboutSection />
+      <TransportationSection />
+      <WorkSectionTwo />
+      <AppSectionTwo />
+      <Footer />
+    </Fragment>
+  );
+};
 
 export default HomePageTwo;

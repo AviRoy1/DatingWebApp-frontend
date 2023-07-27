@@ -1,9 +1,9 @@
 import React from "react";
 import { redirect, useNavigate } from "react-router";
 import { Link, NavLink } from "react-router-dom";
-
 import img1 from "../../css/assets/images/logo/logo.png";
 import { useSelector } from "react-redux";
+import { FaCheckCircle } from "react-icons/fa";
 
 const Headertwo = () => {
   const { user } = useSelector((state) => state.user);
@@ -47,7 +47,9 @@ const Headertwo = () => {
             <div
               className="collapse navbar-collapse justify-content-end"
               id="navbarNavAltMarkup">
-              <div className="navbar-nav mainmenu">
+              <div
+                className="navbar-nav mainmenu"
+                style={{ marginLeft: "-20px" }}>
                 <ul>
                   <li>
                     <NavLink to="/">Home</NavLink>
@@ -65,17 +67,40 @@ const Headertwo = () => {
               </div>
               <div className="header__more">
                 {user !== null ? (
-                  //   <button
-                  //     className="default-btn"
-                  //     onClick={useHandler}
-                  //     type="button"
-                  //     //   id="moreoption"
-                  //     //   data-bs-toggle="dropdown"
-                  //     aria-expanded="false">
-                  //     <span>{user?.name}</span>
-                  //   </button>
                   <li>
-                    <NavLink to="/">{user.user.name}</NavLink>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        marginTop: "-19px",
+                      }}>
+                      <img
+                        src={`${user?.user?.profilePic}`}
+                        style={{
+                          width: "42px",
+                          height: "42px",
+                          borderRadius: "50%",
+                          marginRight: "8px",
+                        }}
+                        alt=""
+                      />
+                      <NavLink to="/">{user.user?.name}</NavLink>
+                      {user.user.subscription.plan === "2" ? (
+                        <FaCheckCircle
+                          size={25}
+                          color="rgb(77, 121, 255)"
+                          style={{ marginLeft: "5px" }}
+                        />
+                      ) : user.user.subscription.plan === "3" ? (
+                        <FaCheckCircle
+                          size={25}
+                          color="rgb(0, 64, 255)"
+                          style={{ marginLeft: "5px" }}
+                        />
+                      ) : (
+                        ""
+                      )}
+                    </div>
                   </li>
                 ) : (
                   <button

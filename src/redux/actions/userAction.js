@@ -12,17 +12,21 @@ import {
   updateProfileFail,
   updateProfileRequest,
   updateProfileSuccess,
+  addPhotoFail,
+  addPhotoRequest,
+  addPhotoSuccess,
 } from "../reducers/userReducer";
 
 export const signup = async (dispatch, user) => {
   dispatch(clearMessage);
+
   dispatch(loginStart());
   try {
     const res = await axios.post(`${server}/api/user/signup`, user);
-    // console.log(res.data);
     dispatch(loginSuccess(res.data));
   } catch (error) {
-    dispatch(loginFailure());
+    // console.log(error.response);
+    dispatch(loginFailure(error.response.data.message));
   }
 };
 
@@ -71,6 +75,23 @@ export const updateProfile = async (dispatch, data, accessToken) => {
     dispatch(updateProfileSuccess(res.data));
   } catch (error) {
     dispatch(updateProfileFail(error.response.data.message));
+  }
+};
+
+export const addPhoto = async (dispatch, data, accessToken) => {
+  dispatch(addPhotoRequest());
+  try {
+    const res = await axios.post(`${server}/api/user/addphoto`, data, {
+      headers: {
+        "Content-Type": "application/JSON",
+        token: accessToken,
+      },
+      withCredentials: true,
+    });
+    // console.log(res.data);
+    dispatch(addPhotoSuccess(res.data));
+  } catch (error) {
+    dispatch(addPhotoFail(error.response.data.message));
   }
 };
 

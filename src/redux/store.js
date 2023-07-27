@@ -36,4 +36,4 @@ export const store = configureStore({
 });
 
 export let persistor = persistStore(store);
-export const server = "https://datingapp-qkid.onrender.com";
+export const server = "https://datingwebapp.onrender.com";

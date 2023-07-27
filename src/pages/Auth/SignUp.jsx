@@ -16,12 +16,12 @@ const SignUp = () => {
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const nevigate = useNavigate();
 
   const clickHandler = (e) => {
     e.preventDefault();
     signup(dispatch, { email, name, password });
-    navigate("/addprofile");
+    nevigate("/addprofile");
   };
 
   return (

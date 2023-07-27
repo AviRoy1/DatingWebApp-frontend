@@ -16,6 +16,7 @@ export const useReducer = createSlice({
     loginSuccess: (state, action) => {
       state.isFetching = false;
       state.user = action.payload;
+      state.accessToken = action.payload.accessToken;
       state.message = action.payload.message;
     },
     loginFailure: (state, action) => {
@@ -39,10 +40,22 @@ export const useReducer = createSlice({
     },
     updateProfileSuccess: (state, action) => {
       state.isFetching = false;
-      state.user = action.payload;
       state.message = action.payload.message;
+      state.user = action.payload;
     },
     updateProfileFail: (state, action) => {
+      state.isFetching = false;
+      state.error = action.payload;
+    },
+    addPhotoRequest: (state) => {
+      state.isFetching = true;
+    },
+    addPhotoSuccess: (state, action) => {
+      state.isFetching = false;
+      state.message = action.payload.message;
+      state.user = action.payload;
+    },
+    addPhotoFail: (state, action) => {
       state.isFetching = false;
       state.error = action.payload;
     },
@@ -71,5 +84,8 @@ export const {
   updateProfileFail,
   updateProfileSuccess,
   updateProfileRequest,
+  addPhotoFail,
+  addPhotoRequest,
+  addPhotoSuccess,
 } = useReducer.actions;
 export default useReducer.reducer;
