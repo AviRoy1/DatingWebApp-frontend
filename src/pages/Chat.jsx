@@ -242,7 +242,7 @@ export default function Chat() {
                                         }
                                         alt="avatar"
                                         className="d-flex align-self-center me-3"
-                                        width="40"
+                                        width="50px"
                                         style={{ borderRadius: "100%" }}
                                       />
                                       <span className="badge bg-success badge-dot"></span>
