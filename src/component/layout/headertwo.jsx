@@ -67,9 +67,9 @@ const Headertwo = () => {
   //   } catch (error) {}
   // };
 
-  useEffect(() => {
-    allnoti();
-  }, []);
+  // useEffect(() => {
+  //   allnoti();
+  // }, []);
 
   const [notificationCount, setNotificationCount] = useState(5);
   const [anchorEl, setAnchorEl] = useState(null);
