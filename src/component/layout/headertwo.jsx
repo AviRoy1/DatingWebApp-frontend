@@ -48,24 +48,24 @@ const Headertwo = () => {
   const [count, setCount] = useState(0);
 
   const [loading, setLoading] = useState(true);
-  const allnoti = async () => {
-    try {
-      const res = await axios.post(
-        `${server}/api/payment/getnotification`,
-        {
-          id: user.user._id,
-        },
-        {
-          headers: {
-            "Content-Type": "application/JSON",
-          },
-        }
-      );
-      setNotifications(res.data.notifications);
-      setCount(res.data.count);
-      setLoading(false);
-    } catch (error) {}
-  };
+  // const allnoti = async () => {
+  //   try {
+  //     const res = await axios.post(
+  //       `${server}/api/payment/getnotification`,
+  //       {
+  //         id: user.user._id,
+  //       },
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/JSON",
+  //         },
+  //       }
+  //     );
+  //     setNotifications(res.data.notifications);
+  //     setCount(res.data.count);
+  //     setLoading(false);
+  //   } catch (error) {}
+  // };
 
   useEffect(() => {
     allnoti();
@@ -198,7 +198,7 @@ const Headertwo = () => {
                                 horizontal: "left",
                               }}>
                               <div style={{ padding: "20px", width: "200px" }}>
-                                {notifications?.length === 0 ? (
+                                {/* {notifications?.length === 0 ? (
                                   <Typography>
                                     You have no new notifications.
                                   </Typography>
@@ -208,7 +208,10 @@ const Headertwo = () => {
                                       {e.text}
                                     </Typography>
                                   ))
-                                )}
+                                )} */}
+                                <Typography>
+                                  You have no new notifications.
+                                </Typography>
                               </div>
                             </Popover>
                             <div style={{ marginLeft: "10px" }}>
