@@ -14,7 +14,6 @@ import {
 import ChatContact from "../component/layout/ChatContact";
 import { useMediaQuery } from "react-responsive";
 import img1 from "../css/assets/images/member/male/04.jpg";
-import { getDetails, userChats } from "../apis/ChatRequest";
 import MessageBox from "../component/layout/MessageBox";
 import { io } from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,33 +26,11 @@ export default function Chat() {
   //logic for testing
 
   const { user, accessToken } = useSelector((state) => state.user);
-  let userIdRef = useRef(user.user._id);
   let userId = user.user._id;
   //logic to fectch contacts
   const [chats, setChats] = useState([]);
   const [friends, setFriends] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // const getFriends = async () => {
-  //   try {
-  //     const res = await axios.get(
-  //       `http://localhost:5000/api/chat/find/friends`,
-
-  //       {
-  //         headers: {
-  //           token: accessToken,
-  //         },
-  //       }
-  //     );
-  //     setFriends(res.data.friends);
-  //     setLoading(false);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-  // useEffect(() => {
-  //   getFriends();
-  // }, []);
 
   useEffect(() => {
     const getChats = async () => {
