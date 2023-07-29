@@ -29,6 +29,7 @@ import MemberDetails from "./pages/member-single";
 import MembershipPage from "./pages/membership";
 import Policy from "./pages/policy";
 import UserProfile from "./pages/UserProfile";
+import Chat from "./pages/Chat";
 
 function App() {
   const { user, isFetching, message, error, accessToken } = useSelector(
@@ -63,6 +64,7 @@ function App() {
             <Route path="/member-single" element={<MemberDetails />} />{" "}
             <Route path="/policy" element={<Policy />} />{" "}
             <Route path="/userprofile" element={<UserProfile />} />{" "}
+            <Route path="/chat" element={<Chat />} />{" "}
           </Routes>
           <Toaster />
         </>

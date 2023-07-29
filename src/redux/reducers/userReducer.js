@@ -61,6 +61,7 @@ export const useReducer = createSlice({
     },
     logout: (state) => {
       state.user = null;
+      state.accessToken = null;
     },
 
     clearError: (state) => {

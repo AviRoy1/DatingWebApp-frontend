@@ -1,111 +1,258 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Center, Flex, Image, useMediaQuery } from "@chakra-ui/react";
-import { motion } from "framer-motion";
-import { IoIosClose, IoIosHeart, IoIosRocket, IoIosEye } from "react-icons/io";
-import ProfileMenu from "../Profile/ProfileMenu";
-import { Container } from "react-bootstrap";
+import { motion, wrap } from "framer-motion";
+import TinderCard from "react-tinder-card";
+import "./TinderCard.css";
+import "./SwipeButtons.css";
+import VisibilityRoundedIcon from "@mui/icons-material/VisibilityRounded";
+import CloseIcon from "@mui/icons-material/Close";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FlashOnIcon from "@mui/icons-material/FlashOn";
+import IconButton from "@mui/material/IconButton";
+import ReplyIcon from "@mui/icons-material/Reply";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import { toast, ToastContainer } from "react-toastify";
+import UserProfile from "../UserProfile";
+import Loader from "../../component/Loader/Loader";
+import MatchPopup from "./MatchPopup";
+import ProfilePopup from "./ProfilePopup";
+import { server } from "../../redux/store";
 
-const MotionButton = motion.button;
+const Match1 = () => {
+  const [isLaptop] = useMediaQuery("(min-width: 1024px)");
+  const { user, accessToken, isFetching } = useSelector((state) => state.user);
+  const [loading, setLoading] = useState(true);
 
-const Spacer = () => <Box w={4} />; // Customize the space between icons here
+  const cardWidth = isLaptop ? "70vw" : "100vw";
+  const MotionButton = motion.button;
+  const [isMatch, setIsMatch] = useState(false);
+  const [isProfilePopupOpen, setProfilePopupOpen] = useState(false);
+  const [lastswap, setLastswap] = useState("");
+  const [lastswapaction, setLastswapaction] = useState("none");
+  const [matchusers, setMatchusers] = useState([]);
+  const [curuser, setCuruser] = useState({});
 
-const MatchCard = ({ user, onSwipe }) => {
+  const getuser = async () => {
+    try {
+      const res = await axios.post(
+        `${server}/api/match/create`,
+        {},
+        {
+          headers: {
+            token: accessToken,
+          },
+        }
+      );
+      setMatchusers(res.data.alluser);
+      setCuruser(res.data.alluser[0]);
+      setLoading(false);
+    } catch (error) {
+      // Handle the error
+    }
+  };
+  useEffect(() => {
+    getuser();
+  }, []);
+
+  const likehandler = async () => {
+    try {
+      setLastswap(matchusers[0]._id);
+      setLastswapaction("dislike");
+      const rr = await await axios.post(
+        `${server}/api/match/like`,
+        { userid: matchusers[0]._id },
+        {
+          headers: {
+            token: accessToken,
+          },
+        }
+      );
+      console.log(rr.data);
+      if (rr.data.ismatch) {
+        setIsMatch(true);
+      }
+      setLastswap(matchusers[0]._id);
+      setLastswapaction("like");
+      getuser();
+    } catch (error) {
+      console.error("API Error:", error);
+      toast.error(error.response.data.message);
+    }
+  };
+
+  const handleOpenProfile = () => {
+    setProfilePopupOpen(true);
+  };
+
+  const handleCloseProfile = () => {
+    setProfilePopupOpen(false);
+  };
+  const dislikehandler = async () => {
+    try {
+      setLastswap(matchusers[0]._id);
+      setLastswapaction("dislike");
+      const rr = await axios.post(
+        `${server}/api/match/dislike`,
+        { userid: matchusers[0]._id },
+        {
+          headers: {
+            token: accessToken,
+          },
+        }
+      );
+      console.log(rr.data);
+      setLastswap(matchusers[0]._id);
+      setLastswapaction("dislike");
+      getuser();
+    } catch (error) {
+      console.error("API Error:", error);
+      toast.error(error.response.data.message);
+    }
+  };
+
+  const onSwipe = async (dir) => {
+    if (dir === "right") {
+      try {
+        setLastswap(matchusers[0]._id);
+        setLastswapaction("like");
+        const rr = await await axios.post(
+          `${server}/api/match/like`,
+          { userid: matchusers[0]._id },
+          {
+            headers: {
+              token: accessToken,
+            },
+          }
+        );
+        console.log(rr.data);
+        if (rr.data.ismatch) {
+          setIsMatch(true);
+        }
+        getuser();
+      } catch (error) {
+        // console.error("API Error:", error);
+        // toast.error(error.response.message);
+      }
+    } else {
+      try {
+        setLastswap(matchusers[0]._id);
+        setLastswapaction("dislike");
+        const rr = await await axios.post(
+          `${server}/api/match/dislike`,
+          { userid: matchusers[0]._id },
+          {
+            headers: {
+              token: accessToken,
+            },
+          }
+        );
+        console.log(rr.data);
+        getuser();
+      } catch (error) {
+        console.error("API Error:", error);
+        // toast.error(error.response.data.message);
+      }
+    }
+  };
+
+  const undoHandler = async () => {
+    if (lastswapaction !== "none") {
+      try {
+        await axios.post(
+          `${server}/api/match/undoswap`,
+          {
+            lastswapaction: lastswapaction,
+            lastswap: lastswap,
+          },
+          {
+            headers: {
+              token: accessToken,
+            },
+          }
+        );
+      } catch (error) {
+        console.error("API Error:", error);
+      }
+      getuser();
+    }
+  };
+
+  const openprofile = async () => {
+    return <UserProfile user={curuser} />;
+  };
+
+  console.log(lastswap, lastswapaction);
+
   return (
-    <Box
-      w="340px" // Adjust card width as needed
-      h="70%" // Adjust card height as needed
-      borderRadius="lg"
-      overflow="hidden"
-      position="relative"
-      initial={{ scale: 0.9 }}
-      animate={{ scale: 1 }}
-      transition={{ duration: 0.2 }}
-      m={2} // Add some margin between cards
-    >
-      <Image
-        src={user.profilePic}
-        alt={user.name}
-        w="100%"
-        h="70%"
-        objectFit="cover"
-        borderTopRadius="lg"
-      />
+    <>
+      {loading === true ? (
+        <Loader />
+      ) : (
+        <>
+          <div>
+            <Center bg="none" color="white">
+              <Box bg="none" color="none" height={"500px"} width={cardWidth}>
+                <Flex
+                  flexWrap={wrap}
+                  justifyContent="center"
+                  height={"100%"}
+                  width={"100%"}>
+                  <TinderCard
+                    className="swipe"
+                    onSwipe={onSwipe}
+                    key={matchusers[0].name}
+                    preventSwipe={["up", "down"]}>
+                    <div
+                      style={{
+                        height: "440px",
+                        backgroundImage: `url(${matchusers[0].profilePic})`,
+                      }}
+                      className="cardd">
+                      <h3>{matchusers[0].name}</h3>
+                    </div>
+                  </TinderCard>
+                </Flex>
+              </Box>
+            </Center>
+            <div className="swipeButtons">
+              <IconButton
+                className="swipeButtons__repeat"
+                onClick={undoHandler}>
+                <ReplyIcon fontSize="large" />
+              </IconButton>
+              <IconButton className="swipeButtons__star">
+                <VisibilityRoundedIcon fontSize="large" />
+              </IconButton>
 
-      <Box p={4} h="30%" bg="#FE3C72" borderTop="1px" borderColor="white">
-        <Center
-          fontWeight="bold"
-          fontSize="xl"
-          color="white"
-          mb={2}
-          textTransform="capitalize">
-          {user.name}
-        </Center>
-        <Center fontSize="sm" color="white">
-          {user.bio}
-        </Center>
-      </Box>
+              <IconButton
+                className="swipeButtons__left"
+                onClick={dislikehandler}>
+                <CloseIcon fontSize="large" />
+              </IconButton>
 
-      <Flex
-        justify="center"
-        align="center"
-        p={2}
-        position="absolute"
-        bottom="0"
-        left="0"
-        w="100%"
-        bg="rgba(0, 0, 0, 0.6)"
-        borderBottomRadius="lg">
-        <MotionButton
-          aria-label="View Profile"
-          whileTap={{ scale: 1.2 }}
-          onClick={() => onSwipe(false)}
-          bg="transparent">
-          <IoIosEye size={24} color="white" />
-        </MotionButton>
-        <Spacer />
-        <MotionButton
-          aria-label="Super Like"
-          whileTap={{ scale: 1.2 }}
-          onClick={() => onSwipe(false)}
-          bg="transparent">
-          <IoIosRocket size={24} color="#FFD500" />
-        </MotionButton>
-        <Spacer />
-        <MotionButton
-          aria-label="Dislike"
-          whileTap={{ scale: 1.2 }}
-          onClick={() => onSwipe(false)}
-          bg="transparent">
-          <IoIosClose size={24} color="red" />
-        </MotionButton>
-        <Spacer />
-        <MotionButton
-          aria-label="Like"
-          whileTap={{ scale: 1.2 }}
-          onClick={() => onSwipe(true)}
-          bg="transparent">
-          <IoIosHeart size={24} color="#00C689" />
-        </MotionButton>
-      </Flex>
-    </Box>
+              <IconButton className="swipeButtons__right" onClick={likehandler}>
+                <FavoriteIcon fontSize="large" />
+              </IconButton>
+
+              <IconButton className="swipeButtons__lightning">
+                <FlashOnIcon fontSize="large" />
+              </IconButton>
+            </div>
+            {isProfilePopupOpen && (
+              <ProfilePopup user={matchusers[0]} onClose={handleCloseProfile} />
+            )}
+            {isMatch && <MatchPopup onClose={() => setIsMatch(false)} />}
+            <ToastContainer
+              position="top-center"
+              autoClose={5000}
+              hideProgressBar
+            />
+          </div>
+        </>
+      )}
+    </>
   );
 };
 
-export default MatchCard;
-
-const MatchPage = () => {
-  const [isLaptop] = useMediaQuery("(min-width: 1024px)"); // Adjust breakpoint for laptops
-  const cardWidth = isLaptop ? "70vw" : "100vw"; // Increased card width for laptops
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const handleSwipe = (isLiked) => {
-    // You can add your logic here to handle the swipe action and matching.
-    // For this example, we'll just log the action.
-    if (isLiked) {
-      console.log("Liked");
-    } else {
-      console.log("Disliked");
-    }
-  };
-};
+export default Match1;

@@ -1,5 +1,5 @@
-import { server } from "../store";
 import axios from "axios";
+import { server } from "../store";
 import {
   loginFailure,
   loginStart,
