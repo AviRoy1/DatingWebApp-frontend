@@ -86,119 +86,119 @@ const Headertwo = () => {
   // console.log(notifications);
   return (
     <>
-      {loading === true ? (
+      {/* {loading === true ? (
         <Loader />
-      ) : (
-        <>
-          <header className="header" id="navbar">
-            <div className="header__bottom">
-              <div className="container">
-                <nav className="navbar navbar-expand-lg">
-                  <Link className="navbar-brand" to="/">
-                    <img src={img1} alt="logo" />
-                  </Link>
-                  <button
-                    className="navbar-toggler collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarNavAltMarkup"
-                    aria-controls="navbarNavAltMarkup"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-                    <span className="navbar-toggler--icon"></span>
-                  </button>
+      ) : ( */}
+      <>
+        <header className="header" id="navbar">
+          <div className="header__bottom">
+            <div className="container">
+              <nav className="navbar navbar-expand-lg">
+                <Link className="navbar-brand" to="/">
+                  <img src={img1} alt="logo" />
+                </Link>
+                <button
+                  className="navbar-toggler collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#navbarNavAltMarkup"
+                  aria-controls="navbarNavAltMarkup"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation">
+                  <span className="navbar-toggler--icon"></span>
+                </button>
+                <div
+                  className="collapse navbar-collapse justify-content-end"
+                  id="navbarNavAltMarkup">
                   <div
-                    className="collapse navbar-collapse justify-content-end"
-                    id="navbarNavAltMarkup">
-                    <div
-                      className="navbar-nav mainmenu"
-                      style={{ marginLeft: "-20px" }}>
-                      <ul>
-                        <li>
-                          <NavLink to="/">Home</NavLink>
-                        </li>
-                        <li>
-                          <NavLink to="/about">About us</NavLink>
-                        </li>
-                        <li>
-                          <NavLink to="/membership">Membership</NavLink>
-                        </li>
-                        <li>
-                          <NavLink to="/contact">contact</NavLink>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="header__more">
-                      {user !== null ? (
-                        <li>
-                          <div
+                    className="navbar-nav mainmenu"
+                    style={{ marginLeft: "-20px" }}>
+                    <ul>
+                      <li>
+                        <NavLink to="/">Home</NavLink>
+                      </li>
+                      <li>
+                        <NavLink to="/about">About us</NavLink>
+                      </li>
+                      <li>
+                        <NavLink to="/membership">Membership</NavLink>
+                      </li>
+                      <li>
+                        <NavLink to="/contact">contact</NavLink>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="header__more">
+                    {user !== null ? (
+                      <li>
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            marginTop: "-19px",
+                          }}>
+                          <img
+                            src={`${user?.user?.profilePic}`}
                             style={{
-                              display: "flex",
-                              alignItems: "center",
-                              marginTop: "-19px",
-                            }}>
-                            <img
-                              src={`${user?.user?.profilePic}`}
-                              style={{
-                                width: "42px",
-                                height: "42px",
-                                borderRadius: "50%",
-                                marginRight: "8px",
-                              }}
-                              alt=""
+                              width: "42px",
+                              height: "42px",
+                              borderRadius: "50%",
+                              marginRight: "8px",
+                            }}
+                            alt=""
+                          />
+                          <NavLink to="/member-single">
+                            {user.user?.name}
+                          </NavLink>
+                          {user.user.subscription.plan === "2" ? (
+                            <FaCheckCircle
+                              size={25}
+                              color="rgb(77, 121, 255)"
+                              style={{ marginLeft: "5px" }}
                             />
-                            <NavLink to="/member-single">
-                              {user.user?.name}
-                            </NavLink>
-                            {user.user.subscription.plan === "2" ? (
-                              <FaCheckCircle
-                                size={25}
-                                color="rgb(77, 121, 255)"
-                                style={{ marginLeft: "5px" }}
-                              />
-                            ) : user.user.subscription.plan === "3" ? (
-                              <FaCheckCircle
-                                size={25}
-                                color="rgb(0, 64, 255)"
-                                style={{ marginLeft: "5px" }}
-                              />
-                            ) : (
-                              ""
-                            )}
-                            <IconButton
-                              style={{ color: "green" }}
-                              onClick={handleButtonClick}>
-                              <div
-                                style={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                }}>
-                                <NotificationsIcon fontSize="medium" />
-                                {notificationCount > 0 && (
-                                  <span
-                                    style={{
-                                      fontSize: "12px",
-                                      marginLeft: "5px",
-                                    }}>
-                                    {notificationCount}
-                                  </span>
-                                )}
-                              </div>
-                            </IconButton>
-                            <Popover
-                              open={open}
-                              anchorEl={anchorEl}
-                              onClose={handlePopoverClose}
-                              anchorOrigin={{
-                                vertical: "bottom",
-                                horizontal: "left",
-                              }}
-                              transformOrigin={{
-                                vertical: "top",
-                                horizontal: "left",
+                          ) : user.user.subscription.plan === "3" ? (
+                            <FaCheckCircle
+                              size={25}
+                              color="rgb(0, 64, 255)"
+                              style={{ marginLeft: "5px" }}
+                            />
+                          ) : (
+                            ""
+                          )}
+                          <IconButton
+                            style={{ color: "green" }}
+                            onClick={handleButtonClick}>
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
                               }}>
-                              <div style={{ padding: "20px", width: "200px" }}>
-                                {/* {notifications?.length === 0 ? (
+                              <NotificationsIcon fontSize="medium" />
+                              {notificationCount > 0 && (
+                                <span
+                                  style={{
+                                    fontSize: "12px",
+                                    marginLeft: "5px",
+                                  }}>
+                                  {notificationCount}
+                                </span>
+                              )}
+                            </div>
+                          </IconButton>
+                          <Popover
+                            open={open}
+                            anchorEl={anchorEl}
+                            onClose={handlePopoverClose}
+                            anchorOrigin={{
+                              vertical: "bottom",
+                              horizontal: "left",
+                            }}
+                            transformOrigin={{
+                              vertical: "top",
+                              horizontal: "left",
+                            }}>
+                            <div style={{ padding: "20px", width: "200px" }}>
+                              {/* {notifications?.length === 0 ? (
                                   <Typography>
                                     You have no new notifications.
                                   </Typography>
@@ -209,42 +209,42 @@ const Headertwo = () => {
                                     </Typography>
                                   ))
                                 )} */}
-                                <Typography>
-                                  You have no new notifications.
-                                </Typography>
-                              </div>
-                            </Popover>
-                            <div style={{ marginLeft: "10px" }}>
-                              <IconButton onClick={logoutcontroller}>
-                                <LogoutIcon
-                                  style={{
-                                    padding: "3vw !important",
-                                    color: "#ec5e6f !important",
-                                  }}
-                                />
-                              </IconButton>
+                              <Typography>
+                                You have no new notifications.
+                              </Typography>
                             </div>
+                          </Popover>
+                          <div style={{ marginLeft: "10px" }}>
+                            <IconButton onClick={logoutcontroller}>
+                              <LogoutIcon
+                                style={{
+                                  padding: "3vw !important",
+                                  color: "#ec5e6f !important",
+                                }}
+                              />
+                            </IconButton>
                           </div>
-                        </li>
-                      ) : (
-                        <button
-                          className="default-btn"
-                          onClick={useHandler}
-                          type="button"
-                          //   id="moreoption"
-                          //   data-bs-toggle="dropdown"
-                          aria-expanded="false">
-                          <span>Sign IN</span>
-                        </button>
-                      )}
-                    </div>
+                        </div>
+                      </li>
+                    ) : (
+                      <button
+                        className="default-btn"
+                        onClick={useHandler}
+                        type="button"
+                        //   id="moreoption"
+                        //   data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <span>Sign IN</span>
+                      </button>
+                    )}
                   </div>
-                </nav>
-              </div>
+                </div>
+              </nav>
             </div>
-          </header>
-        </>
-      )}
+          </div>
+        </header>
+      </>
+      {/* // )} */}
     </>
   );
 };
