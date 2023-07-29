@@ -80,14 +80,16 @@ export default function Chat() {
     const Id = currentChat?.members?.find((id) => id !== userId);
     const getUserData = async () => {
       try {
-        const { data } = await getDetails(Id);
+        const { data } = await axios.post(`${server}/api/chat/detail`, {
+          userId: Id,
+        });
         setUserData(data);
       } catch (err) {
         console.log(err);
       }
     };
     getUserData();
-  }, [currentChat]);
+  }, []);
 
   //tofetch latest message to diplay
 
