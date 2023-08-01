@@ -106,7 +106,7 @@ const MemberDetails = () => {
                               </>
                             ) : ( */}
                             <>
-                              <Match1 />
+                              <Match1 user={user} />
                             </>
                             {/* )
                             } */}
@@ -118,7 +118,7 @@ const MemberDetails = () => {
                           id="gt2"
                           role="tabpanel"
                           aria-labelledby="gt2-tab">
-                          <ProfilePage user={user} />
+                          <ProfilePage />
                         </div>
                       </div>
                     </div>

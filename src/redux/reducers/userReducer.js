@@ -15,7 +15,7 @@ export const useReducer = createSlice({
     },
     loginSuccess: (state, action) => {
       state.isFetching = false;
-      state.user = action.payload;
+      state.user = action.payload.user;
       state.accessToken = action.payload.accessToken;
       state.message = action.payload.message;
     },
@@ -29,7 +29,7 @@ export const useReducer = createSlice({
     },
     loadUserSuccess: (state, action) => {
       state.isFetching = false;
-      state.user = action.payload;
+      state.user = action.payload.user;
     },
     loadUserFail: (state, action) => {
       state.isFetching = false;

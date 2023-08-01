@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Box, Center, Flex, Image, useMediaQuery } from "@chakra-ui/react";
 import { motion, wrap } from "framer-motion";
 import TinderCard from "react-tinder-card";
@@ -18,10 +18,12 @@ import Loader from "../../component/Loader/Loader";
 import MatchPopup from "./MatchPopup";
 import ProfilePopup from "./ProfilePopup";
 import { server } from "../../redux/store";
+import { useSpring, animated } from "@react-spring/web";
+import { useDrag } from "@use-gesture/react";
 
 const Match1 = () => {
   const [isLaptop] = useMediaQuery("(min-width: 1024px)");
-  const { user, accessToken, isFetching } = useSelector((state) => state.user);
+  const { accessToken, isFetching, user } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(true);
 
   const cardWidth = isLaptop ? "70vw" : "100vw";
@@ -32,6 +34,8 @@ const Match1 = () => {
   const [lastswapaction, setLastswapaction] = useState("none");
   const [matchusers, setMatchusers] = useState([]);
   const [curuser, setCuruser] = useState({});
+
+  const [border, setBorder] = useState("");
 
   const getuser = async () => {
     try {
@@ -46,14 +50,22 @@ const Match1 = () => {
       );
       setMatchusers(res.data.alluser);
       setCuruser(res.data.alluser[0]);
+      console.log(
+        res.data.alluser[0].name,
+        res.data.alluser[0].subscription.plan
+      );
+      // if (res.data.alluser[0].subscription.plan === "1") {
+      //   setBorder("#daa520");
+      // } else if (res.data.alluser[0].subscription.plan === "2") {
+      //   setBorder("#C0C0C0");
+      // } else if (res.data.alluser[0].subscription.plan === "3") {
+      //   setBorder("#b1757a");
+      // }
       setLoading(false);
     } catch (error) {
       // Handle the error
     }
   };
-  useEffect(() => {
-    getuser();
-  }, []);
 
   const likehandler = async () => {
     try {
@@ -112,6 +124,7 @@ const Match1 = () => {
   };
 
   const onSwipe = async (dir) => {
+    console.log("dir");
     if (dir === "right") {
       try {
         setLastswap(matchusers[0]._id);
@@ -131,8 +144,8 @@ const Match1 = () => {
         }
         getuser();
       } catch (error) {
-        // console.error("API Error:", error);
-        // toast.error(error.response.message);
+        console.error("API Error:", error);
+        toast.error(error.response.message);
       }
     } else {
       try {
@@ -151,7 +164,7 @@ const Match1 = () => {
         getuser();
       } catch (error) {
         console.error("API Error:", error);
-        // toast.error(error.response.data.message);
+        toast.error(error.response.data.message);
       }
     }
   };
@@ -173,16 +186,35 @@ const Match1 = () => {
         );
       } catch (error) {
         console.error("API Error:", error);
+        toast.error(error.response.data.message);
       }
       getuser();
     }
   };
-
-  const openprofile = async () => {
-    return <UserProfile user={curuser} />;
+  const [showProfilePopup, setShowProfilePopup] = useState(false);
+  const openprofile = () => {
+    setShowProfilePopup(true);
   };
 
-  console.log(lastswap, lastswapaction);
+  const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
+
+  const [isCardClicked, setIsCardClicked] = useState(false);
+  const cardRef = useRef(null);
+
+  const bind = useDrag(({ down, movement: [mx, my] }) => {
+    setIsCardClicked(down); // Set the state to true when the card is being held (dragged)
+  });
+
+  // Animate opacity to 0.5 when the card is being held
+  const cardOpacity = useSpring({ opacity: isCardClicked ? 0.3 : 1 });
+  const imageOpacity = useSpring({ opacity: isCardClicked ? 0.3 : 1 });
+  const textOpacity = useSpring({ opacity: 1 });
+
+  useEffect(() => {
+    getuser();
+  }, []);
+
+  console.log(matchusers[0]);
 
   return (
     <>
@@ -190,38 +222,107 @@ const Match1 = () => {
         <Loader />
       ) : (
         <>
+          <div
+            style={{
+              marginLeft: "0px",
+
+              display: "flex",
+              justifyContent: "space-between", // To distribute the two divs horizontally
+              alignItems: "center", // To vertically center the content inside the parent div
+            }}
+            className="open">
+            <div
+              style={{
+                flex: 1,
+                color: "red",
+                opacity: isCardClicked ? 1 : 0,
+              }}>
+              <h3>Swap Left For Dislike</h3>
+            </div>
+            <div
+              style={{
+                flex: 1,
+                marginLeft: "90px",
+                color: "red",
+                opacity: isCardClicked ? 1 : 0,
+              }}>
+              <h3>Swap Right For Like</h3>
+            </div>
+          </div>
+
           <div>
-            <Center bg="none" color="white">
-              <Box bg="none" color="none" height={"500px"} width={cardWidth}>
-                <Flex
-                  flexWrap={wrap}
-                  justifyContent="center"
-                  height={"100%"}
-                  width={"100%"}>
-                  <TinderCard
-                    className="swipe"
-                    onSwipe={onSwipe}
-                    key={matchusers[0].name}
-                    preventSwipe={["up", "down"]}>
-                    <div
-                      style={{
-                        height: "440px",
-                        backgroundImage: `url(${matchusers[0].profilePic})`,
-                      }}
-                      className="cardd">
-                      <h3>{matchusers[0].name}</h3>
-                    </div>
-                  </TinderCard>
-                </Flex>
-              </Box>
-            </Center>
+            <animated.div style={cardOpacity}>
+              <Center bg="none" color="white">
+                <animated.div {...bind()} style={{ x, y }}>
+                  <div>
+                    <Box
+                      bg="none"
+                      color="none"
+                      height={"500px"}
+                      width={cardWidth}>
+                      <Flex
+                        flexWrap={wrap}
+                        justifyContent="center"
+                        height={"100%"}
+                        width={"100%"}>
+                        <TinderCard
+                          className="swipe"
+                          onSwipe={onSwipe}
+                          key={matchusers[0].name}
+                          preventSwipe={["up", "down"]}>
+                          <animated.div
+                            ref={cardRef}
+                            style={{
+                              height: "440px",
+                              border:
+                                matchusers[0].subscription.plan === "0"
+                                  ? "15px solid black"
+                                  : matchusers[0].subscription.plan === "2"
+                                  ? "15px solid #daa520"
+                                  : matchusers[0].subscription.plan === "1"
+                                  ? "15px solid #C0C0C0"
+                                  : "15px solid #b1757a",
+                              // borderColor: "#000001",
+                              borderRadius: "70px",
+                              backgroundImage: `url(${
+                                matchusers[0]?.profilePic
+                                  ? matchusers[0]?.profilePic
+                                  : ""
+                              })`,
+                              ...imageOpacity, // Apply image opacity animation
+                              position: "relative",
+                            }}
+                            className="cardd">
+                            {/* The name and location text */}
+                            <animated.h3
+                              style={{ marginBottom: "100px", ...textOpacity }}>
+                              {matchusers[0].name}
+                            </animated.h3>
+                            <animated.h3
+                              style={{ marginBottom: "50px", ...textOpacity }}>
+                              {matchusers[0].gender}
+                            </animated.h3>
+                            <animated.h3
+                              style={{ marginRight: "27px", ...textOpacity }}>
+                              Location - {matchusers[0].location}
+                            </animated.h3>
+                          </animated.div>
+                        </TinderCard>
+                      </Flex>
+                    </Box>
+                  </div>
+                </animated.div>
+              </Center>
+            </animated.div>
             <div className="swipeButtons">
               <IconButton
                 className="swipeButtons__repeat"
                 onClick={undoHandler}>
                 <ReplyIcon fontSize="large" />
               </IconButton>
-              <IconButton className="swipeButtons__star">
+              <IconButton
+                className="swipeButtons__star"
+                onClick={handleOpenProfile}>
                 <VisibilityRoundedIcon fontSize="large" />
               </IconButton>
 
@@ -238,6 +339,12 @@ const Match1 = () => {
               <IconButton className="swipeButtons__lightning">
                 <FlashOnIcon fontSize="large" />
               </IconButton>
+              {showProfilePopup && (
+                <ProfilePopup
+                  user={matchusers[0]}
+                  onClose={setProfilePopupOpen(false)}
+                />
+              )}
             </div>
             {isProfilePopupOpen && (
               <ProfilePopup user={matchusers[0]} onClose={handleCloseProfile} />

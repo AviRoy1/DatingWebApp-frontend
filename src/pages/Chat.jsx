@@ -14,6 +14,7 @@ import {
 import ChatContact from "../component/layout/ChatContact";
 import { useMediaQuery } from "react-responsive";
 import img1 from "../css/assets/images/member/male/04.jpg";
+import { getDetails, userChats } from "../apis/ChatRequest";
 import MessageBox from "../component/layout/MessageBox";
 import { io } from "socket.io-client";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,18 +27,40 @@ export default function Chat() {
   //logic for testing
 
   const { user, accessToken } = useSelector((state) => state.user);
-  let userId = user.user._id;
+  let userIdRef = useRef(user._id);
+  let userId = user._id;
   //logic to fectch contacts
   const [chats, setChats] = useState([]);
   const [friends, setFriends] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // const getFriends = async () => {
+  //   try {
+  //     const res = await axios.get(
+  //       `http://localhost:5000/api/chat/find/friends`,
+
+  //       {
+  //         headers: {
+  //           token: accessToken,
+  //         },
+  //       }
+  //     );
+  //     setFriends(res.data.friends);
+  //     setLoading(false);
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // };
+  // useEffect(() => {
+  //   getFriends();
+  // }, []);
 
   useEffect(() => {
     const getChats = async () => {
       try {
         // const { data } = await userChats(userId);
         const { data } = await axios.post(`${server}/api/chat/getall`, {
-          userId: user.user._id,
+          userId: user._id,
         });
         setChats(data);
         setLoading(false);
@@ -141,6 +164,8 @@ export default function Chat() {
     }
   };
 
+  console.log("kwfn ->>>   ", currentChat);
+
   return (
     <>
       {loading === true ? (
@@ -242,7 +267,7 @@ export default function Chat() {
                                         }
                                         alt="avatar"
                                         className="d-flex align-self-center me-3"
-                                        width="50px"
+                                        width="40"
                                         style={{ borderRadius: "100%" }}
                                       />
                                       <span className="badge bg-success badge-dot"></span>
@@ -271,6 +296,11 @@ export default function Chat() {
                                 <MessageBox
                                   chat={currentChat}
                                   userData={userData}
+                                  otherUserdata={
+                                    currentChat.members[0] === user._id
+                                      ? currentChat.members[1]
+                                      : currentChat.members[0]
+                                  }
                                   currentUser={userId}
                                   setSendMessage={setSendMessage}
                                   receiveMessage={receiveMessage}

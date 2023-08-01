@@ -19,11 +19,12 @@ const ProfilePopup = ({ user, onClose }) => {
     bio,
     profilePic,
     relationshipStatus,
+    photos, // Array of photo URLs
   } = user;
 
   // Format the age, location, relationship type, and gender
   const formattedAge = `Age: ${age}`;
-  const formattedLocation = `Location: ${location.city}, ${location.country}`;
+  const formattedLocation = `Location: ${location}, ${location}`;
   const formattedRelationshipType = `Relationship Type: ${relationshipType}`;
   const formattedGender = `Gender: ${gender}`;
   const formattedrelationshipStatus = `Relationship Status: ${relationshipStatus}`;
@@ -124,6 +125,20 @@ const ProfilePopup = ({ user, onClose }) => {
                   {formattedLocation}
                 </Text>
               </motion.div>
+              <Box mt={4} width="100%">
+                <Flex justify="center" flexWrap="wrap">
+                  {photos.slice(0, 6).map((photoUrl, index) => (
+                    <Image
+                      key={index}
+                      src={photoUrl}
+                      alt={`Photo ${index + 1}`}
+                      borderRadius="md"
+                      boxSize="100px"
+                      m={2}
+                    />
+                  ))}
+                </Flex>
+              </Box>
               <Box mt={4}>
                 <motion.button
                   onClick={onClose}

@@ -37,7 +37,6 @@ function App() {
   );
 
   const dispatch = useDispatch();
-  console.log(error, message);
 
   useEffect(() => {
     loaduser(dispatch, accessToken);

@@ -5,6 +5,8 @@ import green from "../../css/assets/images/logo/green.png";
 import grey from "../../css/assets/images/logo/grey.png";
 import { getLatestMessage } from "../../apis/MessageRequest";
 import { format } from "timeago.js";
+import axios from "axios";
+import { server } from "../../redux/store";
 
 const imageUrl =
   "https://cdn.vox-cdn.com/thumbor/S7APkbn99b1oVsds_1JBhvdzsWU=/0x0:2000x1000/1400x1400/filters:focal(814x298:815x299)/cdn.vox-cdn.com/uploads/chorus_asset/file/10440907/Thanos_MCU.jpg";
@@ -22,7 +24,9 @@ const ChatContact = ({
     const userId = data.members.find((id) => id !== currentUser);
     const getUser = async () => {
       try {
-        const { data } = await getDetails(userId);
+        const { data } = await axios.post(`${server}/api/chat/detail`, {
+          userId: userId,
+        });
         setUserData(data);
       } catch (err) {
         console.log(err);

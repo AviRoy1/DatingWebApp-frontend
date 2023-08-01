@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/actions/userAction";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const title = "Welcome to Ollya";
 const otherTitle = "Sign up with your email";
@@ -14,9 +15,14 @@ const Login = () => {
   const dispatch = useDispatch();
   const nevigate = useNavigate();
   const useHandler = (e) => {
-    e.preventDefault();
-    login(dispatch, { email, password });
-    nevigate("/member-single");
+    try {
+      e.preventDefault();
+      login(dispatch, { email, password });
+      toast.success("Welcome Back");
+      nevigate("/member-single");
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
 
   return (
@@ -109,6 +115,7 @@ const Login = () => {
           </div>
         </div>
       </div>
+      <ToastContainer position="top-center" autoClose={5000} hideProgressBar />
     </section>
   );
 };

@@ -54,7 +54,7 @@ export const loaduser = async (dispatch, accessToken) => {
         token: accessToken,
       },
     });
-    // console.log(res.data);
+    console.log(res.data);
     dispatch(loadUserSuccess(res.data));
   } catch (error) {
     dispatch(loadUserFail(error.response.data.message));

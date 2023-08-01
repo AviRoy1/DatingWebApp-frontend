@@ -14,23 +14,32 @@ import { addMessage, getMessages } from "../../apis/MessageRequest";
 import img1 from "../../css/assets/images/member/male/04.jpg";
 import { format } from "timeago.js";
 import { getDetails } from "../../apis/ChatRequest";
+import axios from "axios";
+import { server } from "../../redux/store";
+import { useSelector } from "react-redux";
 
 const MessageBox = ({
   chat,
   userData,
+  otherUserdata,
   currentUser,
   setSendMessage,
   receiveMessage,
 }) => {
+  const { user, accessToken } = useSelector((state) => state.user);
+  userData = user;
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [currentUserData, setCurrentUserData] = useState();
   const [isPickerVisible, setPickerVisible] = useState(true);
   const scroll = useRef();
+  const [receiver, setReceiver] = useState([]);
 
   const handleChange = (e) => {
     setNewMessage(e.target.value);
   };
+
+  console.log(otherUserdata);
 
   //for fetching old message
   useEffect(() => {
@@ -45,6 +54,24 @@ const MessageBox = ({
 
     if (chat !== null) fetchMessages();
   }, [chat, currentUser]);
+
+  const getreceiver = async () => {
+    const res = await axios.post(
+      `${server}/api/user/getprofile`,
+      {
+        id: otherUserdata,
+      },
+      {
+        headers: {
+          token: accessToken,
+        },
+      }
+    );
+    setReceiver(res.data.user);
+  };
+  useEffect(() => {
+    getreceiver();
+  }, []);
 
   //for fetching getting message from socket.io
   useEffect(() => {
@@ -63,7 +90,10 @@ const MessageBox = ({
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const { data } = await getDetails(currentUser);
+        const { data } = await axios.post(`${server}/api/chat/detail`, {
+          userId: currentUser,
+        });
+        console.log("curr --  ", data);
         setCurrentUserData(data);
       } catch (err) {
         console.log(err);
@@ -107,8 +137,7 @@ const MessageBox = ({
           position: "relative",
           height: "67.2vh",
         }}
-        className="pt-3 pe-3"
-      >
+        className="pt-3 pe-3">
         {messages.map((message, index) => (
           <>
             {message.senderId === currentUser ? (
@@ -116,14 +145,12 @@ const MessageBox = ({
                 <div>
                   <p
                     className="small p-2 me-3 mb-1 text-white rounded-3 bg-primary"
-                    style={{ maxWidth: "400px" }}
-                  >
+                    style={{ maxWidth: "400px" }}>
                     {message.text}
                   </p>
                   <p
                     className="small me-3 mb-3 rounded-3 text-muted"
-                    style={{ textAlign: "right" }}
-                  >
+                    style={{ textAlign: "right" }}>
                     {format(message.createdAt)}
                   </p>
                 </div>
@@ -145,10 +172,9 @@ const MessageBox = ({
               <div
                 className="d-flex flex-row justify-content-start"
                 style={{ overflowY: "auto" }}
-                ref={scroll}
-              >
+                ref={scroll}>
                 <img
-                  src={userData?.profilePic ? userData.profilePic : img1}
+                  src={receiver?.profilePic ? receiver.profilePic : img1}
                   alt="avatar 1"
                   style={{
                     width: "45px",
@@ -162,14 +188,12 @@ const MessageBox = ({
                     style={{
                       backgroundColor: "#f5f6f7",
                       maxWidth: "400px",
-                    }}
-                  >
+                    }}>
                     {message.text}
                   </p>
                   <p
                     className="small ms-3 mb-3 rounded-3 text-muted float-start"
-                    style={{ textAlign: "left" }}
-                  >
+                    style={{ textAlign: "left" }}>
                     {format(message.createdAt)}
                   </p>
                 </div>
@@ -183,8 +207,7 @@ const MessageBox = ({
         style={{
           border: "1px solid #f24570",
           borderRadius: "10px",
-        }}
-      >
+        }}>
         <input
           type="text"
           className="form-control form-control-lg"
