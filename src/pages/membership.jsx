@@ -8,6 +8,7 @@ import Footer from "../component/layout/footer";
 import MembershipTable from "../component/layout/MembershipTable";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { server } from "../redux/store";
 
 const title = "Membership Levels";
 const subtitle =
@@ -24,7 +25,7 @@ const MembershipPage = () => {
     try {
       console.log(JSON.stringify(plan));
       const res = await axios.post(
-        "http://localhost:5000/api/payment/subscribe",
+        `${server}/api/payment/subscribe`,
         { plan: plan },
         {
           headers: {
