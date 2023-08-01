@@ -1,7 +1,6 @@
 import axios from "axios";
-import { server } from "../redux/store";
 
-const API = axios.create({ baseURL: `${server}/api/chat` });
+const API = axios.create({ baseURL: "http://localhost:5000/api/chat" });
 
 export const userChats = (id) => API.get(`/${id}`);
 

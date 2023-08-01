@@ -32,7 +32,7 @@ const Loader = () => {
           justifyContent: "center",
           alignItems: "center",
         }}>
-        <PacmanLoader color="#eb708e" />
+        <PacmanLoader color="#FFEEE1" />
       </div>
     </>
   );

@@ -20,6 +20,9 @@ const ChatContact = ({
 }) => {
   const [userData, setUserData] = useState(null);
 
+  let result = data.messageCount > data.totalMessage;
+  const [limitOver, setLimitOver] = useState(result);
+
   useEffect(() => {
     const userId = data.members.find((id) => id !== currentUser);
     const getUser = async () => {
@@ -76,7 +79,13 @@ const ChatContact = ({
               />
             </p>
             <p className="small text-muted">
-              {displayData?.text ? displayData.text : ""}
+              <p className="small text-muted">
+                {!limitOver
+                  ? displayData?.text
+                    ? displayData.text
+                    : ""
+                  : "xxxxxxxxx"}
+              </p>
             </p>
           </div>
         </div>

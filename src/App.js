@@ -29,6 +29,7 @@ import MemberDetails from "./pages/member-single";
 import MembershipPage from "./pages/membership";
 import Policy from "./pages/policy";
 import UserProfile from "./pages/UserProfile";
+import OtpVerify from "./pages/Auth/OtpVerify";
 import Chat from "./pages/Chat";
 
 function App() {
@@ -53,6 +54,7 @@ function App() {
           <Routes>
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/otpverify" element={<OtpVerify />} />
             <Route path="/addprofile" element={<AddProfile />} />
             <Route path="/" element={<HomePageTwo />} />{" "}
             <Route path="/about" element={<AboutPage />} />{" "}
